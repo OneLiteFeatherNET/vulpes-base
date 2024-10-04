@@ -22,7 +22,7 @@ dependencies {
 
 publishData {
     addBuildData()
-    useGitlabReposForProject("89", "https://gitlab.onelitefeather.dev/")
+    useGitlabReposForProject("327", "https://gitlab.onelitefeather.dev/")
     publishTask("jar")
 }
 
