@@ -1,7 +1,6 @@
 group = "net.theevilreaper.vulpes"
 
 subprojects {
-
     apply(plugin = "java")
     apply(plugin = "jacoco")
     apply(plugin = "java-library")
