@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.publishdata)
+    alias(libs.plugins.shadow)
 }
 
 group = "${rootProject.group}.base"
