@@ -62,9 +62,11 @@ dependencyResolutionManagement {
 
     versionCatalogs {
         create("libs") {
-            version("microtus","1.5.0-SNAPSHOT")
-            version("bom", "1.0.6")
+            version("microtus","1.5.0")
+            version("bom", "1.1.0")
             version("publishdata", "1.4.0")
+            version("shadow", "8.3.5")
+
             library("microtus.bom", "net.onelitefeather.microtus", "bom").versionRef("microtus")
             library("dungeon.base.bom", "net.theevilreaper.dungeon.bom", "base").versionRef("bom")
             library("minestom", "net.onelitefeather.microtus", "Microtus").withoutVersion()
@@ -74,7 +76,9 @@ dependencyResolutionManagement {
             library("mockito.core", "org.mockito", "mockito-core").withoutVersion()
             library("mockito.junit", "org.mockito", "mockito-junit-jupiter").withoutVersion()
             library("worldSeed", "net.worldseed.multipart", "WorldSeedEntityEngine").version("8.0.2")
+
             plugin("publishdata", "de.chojo.publishdata").versionRef("publishdata")
+            plugin("shadow", "com.gradleup.shadow").versionRef("shadow")
         }
     }
 }
