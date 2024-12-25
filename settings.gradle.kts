@@ -63,7 +63,7 @@ dependencyResolutionManagement {
     versionCatalogs {
         create("libs") {
             version("microtus","1.5.0")
-            version("bom", "1.1.0")
+            version("bom", "1.1.1")
             version("publishdata", "1.4.0")
             version("shadow", "8.3.5")
 
