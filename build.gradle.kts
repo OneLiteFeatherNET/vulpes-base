@@ -1,33 +1,55 @@
-group = "net.theevilreaper.vulpes"
+plugins {
+    java
+    `java-library`
+    jacoco
+    `maven-publish`
+    alias(libs.plugins.publishdata)
+    alias(libs.plugins.shadow)
+}
 
-subprojects {
-    apply(plugin = "java")
-    apply(plugin = "jacoco")
-    apply(plugin = "java-library")
-    apply(plugin = "maven-publish")
+group = "${rootProject.group}.base"
+version = "1.0.0"
 
-    tasks {
-        getByName<JavaCompile>("compileJava") {
-            options.release.set(21)
-            options.encoding = "UTF-8"
-        }
-        getByName<JacocoReport>("jacocoTestReport") {
-            dependsOn(project.tasks.findByPath("test"))
-            reports {
-                xml.required.set(true)
-            }
-        }
-        getByName<Test>("test") {
-            finalizedBy(project.tasks.findByPath("jacocoTestReport"))
-            useJUnitPlatform()
-            testLogging {
-                events("passed", "skipped", "failed")
-            }
+dependencies {
+    implementation(platform(libs.mycelium.bom))
+    implementation(libs.worldSeed) {
+        exclude(group = "com.github.Minestom", module = "Minestom")
+    }
+    compileOnly(libs.minestom)
+    testImplementation(platform(libs.mycelium.bom))
+    testImplementation(libs.minestom)
+    testImplementation(libs.minestom.test)
+    testImplementation(libs.junit.api)
+    testRuntimeOnly(libs.junit.engine)
+}
+
+publishData {
+    addBuildData()
+    useGitlabReposForProject("327", "https://gitlab.onelitefeather.dev/")
+    publishTask("jar")
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            // configure the publication as defined previously.
+            publishData.configurePublication(this)
+            version = publishData.getVersion(false)
         }
     }
-    configure<JavaPluginExtension> {
-        toolchain {
-            languageVersion.set(JavaLanguageVersion.of(21))
+    repositories {
+        maven {
+            credentials(HttpHeaderCredentials::class) {
+                name = "Job-Token"
+                value = System.getenv("CI_JOB_TOKEN")
+            }
+            authentication {
+                create("header", HttpHeaderAuthentication::class)
+            }
+
+            name = "Gitlab"
+            // Get the detected repository from the publish data
+            url = uri(publishData.getRepository())
         }
     }
 }
