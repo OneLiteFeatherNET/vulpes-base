@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "net.thevilreaper.vulpes.base"
-version = "1.0.0"
+version = "0.5.0"
 
 dependencies {
     implementation(platform(libs.mycelium.bom))
