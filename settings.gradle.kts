@@ -37,7 +37,7 @@ dependencyResolutionManagement {
             library("junit.engine", "org.junit.jupiter", "junit-jupiter-engine").withoutVersion()
             library("worldSeed", "net.worldseed.multipart", "WorldSeedEntityEngine").version("11.3.1")
 
-            plugin("publishdata", "de.chojo.publishdata").versionRef("publishdata")
+            plugin("shadow", "com.gradleup.shadow").versionRef("shadow")
         }
     }
 }
