@@ -50,6 +50,3 @@ dependencyResolutionManagement {
         }
     }
 }
-
-include("api")
-include("base")
