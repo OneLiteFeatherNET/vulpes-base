@@ -11,7 +11,7 @@ version = "0.5.0"
 
 dependencies {
     implementation(platform(libs.mycelium.bom))
-    implementation(libs.worldSeed) {
+    compileOnly(libs.worldSeed) {
         exclude(group = "com.github.Minestom", module = "Minestom")
     }
     compileOnly(libs.minestom)
