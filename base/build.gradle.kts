@@ -7,13 +7,13 @@ group = "${rootProject.group}.base"
 version = "1.0.0"
 
 dependencies {
-    implementation(platform(libs.dungeon.base.bom))
+    implementation(platform(libs.mycelium.bom))
     implementation(project(":api"))
     implementation(libs.worldSeed) {
         exclude(group = "com.github.Minestom", module = "Minestom")
     }
     compileOnly(libs.minestom)
-    testImplementation(platform(libs.dungeon.base.bom))
+    testImplementation(platform(libs.mycelium.bom))
     testImplementation(project(":api"))
     testImplementation(libs.minestom)
     testImplementation(libs.minestom.test)

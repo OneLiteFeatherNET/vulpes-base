@@ -6,9 +6,11 @@ group = "${rootProject.group}.api"
 version = "1.0.0"
 
 dependencies {
-    implementation(platform(libs.dungeon.base.bom))
+    implementation(platform(libs.mycelium.bom))
+
     compileOnly(libs.minestom)
-    testImplementation(platform(libs.dungeon.base.bom))
+
+    testImplementation(platform(libs.mycelium.bom))
     testImplementation(libs.minestom)
     testImplementation(libs.minestom.test)
     testImplementation(libs.junit.api)
