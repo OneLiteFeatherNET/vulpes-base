@@ -3,11 +3,10 @@ plugins {
     `java-library`
     jacoco
     `maven-publish`
-    alias(libs.plugins.publishdata)
     alias(libs.plugins.shadow)
 }
 
-group = "${rootProject.group}.base"
+group = "net.thevilreaper.vulpes.base"
 version = "1.0.0"
 
 dependencies {
@@ -23,33 +22,57 @@ dependencies {
     testRuntimeOnly(libs.junit.engine)
 }
 
-publishData {
-    addBuildData()
-    useGitlabReposForProject("327", "https://gitlab.onelitefeather.dev/")
-    publishTask("jar")
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
+}
+
+tasks {
+    compileJava {
+        options.release.set(21)
+        options.encoding = "UTF-8"
+    }
+
+    jacocoTestReport {
+        dependsOn(test)
+        reports {
+            xml.required.set(true)
+        }
+    }
+
+    test {
+        finalizedBy(jacocoTestReport)
+        useJUnitPlatform()
+        jvmArgs("-Dminestom.inside-test=true")
+        testLogging {
+            events("passed", "skipped", "failed")
+        }
+    }
+
 }
 
 publishing {
     publications {
         create<MavenPublication>("maven") {
-            // configure the publication as defined previously.
-            publishData.configurePublication(this)
-            version = publishData.getVersion(false)
+            from(components["java"])
         }
     }
+
     repositories {
         maven {
-            credentials(HttpHeaderCredentials::class) {
-                name = "Job-Token"
-                value = System.getenv("CI_JOB_TOKEN")
-            }
             authentication {
-                create("header", HttpHeaderAuthentication::class)
+                credentials(PasswordCredentials::class) {
+                    username = System.getenv("ONELITEFEATHER_MAVEN_USERNAME")
+                    password = System.getenv("ONELITEFEATHER_MAVEN_PASSWORD")
+                }
             }
-
-            name = "Gitlab"
-            // Get the detected repository from the publish data
-            url = uri(publishData.getRepository())
+            name = "OneLiteFeatherRepository"
+            url = if (project.version.toString().contains("SNAPSHOT")) {
+                uri("https://repo.onelitefeather.dev/onelitefeather-snapshots")
+            } else {
+                uri("https://repo.onelitefeather.dev/onelitefeather-releases")
+            }
         }
     }
 }

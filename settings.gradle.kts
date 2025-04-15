@@ -1,12 +1,5 @@
 rootProject.name = "vulpes"
 
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-        maven("https://eldonexus.de/repository/maven-public/")
-    }
-}
-
 dependencyResolutionManagement {
     repositories {
         mavenCentral()
@@ -33,7 +26,6 @@ dependencyResolutionManagement {
         create("libs") {
             version("microtus","1.5.1")
             version("bom", "1.1.2")
-            version("publishdata", "1.4.0")
             version("shadow", "8.3.5")
 
             library("microtus.bom", "net.onelitefeather.microtus", "bom").versionRef("microtus")
@@ -46,7 +38,6 @@ dependencyResolutionManagement {
             library("worldSeed", "net.worldseed.multipart", "WorldSeedEntityEngine").version("8.0.14")
 
             plugin("publishdata", "de.chojo.publishdata").versionRef("publishdata")
-            plugin("shadow", "com.gradleup.shadow").versionRef("shadow")
         }
     }
 }
