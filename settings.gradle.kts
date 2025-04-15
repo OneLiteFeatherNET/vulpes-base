@@ -35,7 +35,7 @@ dependencyResolutionManagement {
             library("minestom-test", "net.onelitefeather.microtus.testing", "testing").withoutVersion()
             library("junit.api", "org.junit.jupiter", "junit-jupiter-api").withoutVersion()
             library("junit.engine", "org.junit.jupiter", "junit-jupiter-engine").withoutVersion()
-            library("worldSeed", "net.worldseed.multipart", "WorldSeedEntityEngine").version("8.0.14")
+            library("worldSeed", "net.worldseed.multipart", "WorldSeedEntityEngine").version("11.3.1")
 
             plugin("publishdata", "de.chojo.publishdata").versionRef("publishdata")
         }
