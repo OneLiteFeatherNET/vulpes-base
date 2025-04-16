@@ -6,8 +6,8 @@ plugins {
     alias(libs.plugins.shadow)
 }
 
-group = "net.thevilreaper.vulpes.base"
-version = "0.5.0"
+group = "net.theevilreaper.vulpes.base"
+version = "0.5.1"
 
 dependencies {
     implementation(platform(libs.mycelium.bom))
