@@ -26,7 +26,7 @@ dependencyResolutionManagement {
         create("libs") {
             version("microtus","1.5.1")
             version("bom", "1.1.2")
-            version("shadow", "8.3.5")
+            version("shadow", "8.3.6")
 
             library("microtus.bom", "net.onelitefeather.microtus", "bom").versionRef("microtus")
             library("mycelium.bom", "net.theevilreaper.mycelium.bom", "mycelium-bom").versionRef("bom")
