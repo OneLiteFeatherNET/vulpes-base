@@ -17,7 +17,7 @@ dependencies {
     compileOnly(libs.minestom)
     testImplementation(platform(libs.mycelium.bom))
     testImplementation(libs.minestom)
-    testImplementation(libs.minestom.test)
+    testImplementation(libs.cyano)
     testImplementation(libs.junit.api)
     testRuntimeOnly(libs.junit.engine)
 }

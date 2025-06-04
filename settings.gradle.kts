@@ -24,15 +24,13 @@ dependencyResolutionManagement {
 
     versionCatalogs {
         create("libs") {
-            version("microtus","1.5.1")
-            version("bom", "1.1.2")
             version("shadow", "8.3.6")
+            version("bom", "1.2.3")
 
-            library("microtus.bom", "net.onelitefeather.microtus", "bom").versionRef("microtus")
-            library("mycelium.bom", "net.theevilreaper.mycelium.bom", "mycelium-bom").versionRef("bom")
+            library("mycelium.bom", "net.onelitefeather", "mycelium-bom").versionRef("bom")
+            library("minestom","net.minestom", "minestom-snapshots").withoutVersion()
+            library("cyano", "net.onelitefeather", "cyano").withoutVersion()
 
-            library("minestom", "net.onelitefeather.microtus", "Microtus").withoutVersion()
-            library("minestom-test", "net.onelitefeather.microtus.testing", "testing").withoutVersion()
             library("junit.api", "org.junit.jupiter", "junit-jupiter-api").withoutVersion()
             library("junit.engine", "org.junit.jupiter", "junit-jupiter-engine").withoutVersion()
             library("worldSeed", "net.worldseed.multipart", "WorldSeedEntityEngine").version("11.3.1")
