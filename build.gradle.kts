@@ -6,7 +6,7 @@ plugins {
     alias(libs.plugins.shadow)
 }
 
-group = "net.theevilreaper.vulpes.base"
+group = "net.theevilreaper"
 version = "0.5.1"
 
 dependencies {
