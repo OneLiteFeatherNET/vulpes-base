@@ -3,7 +3,6 @@ rootProject.name = "vulpes"
 dependencyResolutionManagement {
     repositories {
         mavenCentral()
-        maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
         maven("https://reposilite.atlasengine.ca/public")
         maven {
             name = "OneLiteFeatherRepository"
