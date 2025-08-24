@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * The {@link Registry} interface contains the basic method structure for different kind of registries.
@@ -50,7 +51,9 @@ public sealed interface Registry<T extends VulpesKey<T>> extends Keyed permits I
      * @param key the key to check
      * @return true if the key is registered otherwise false
      */
-    boolean contains(@NotNull VulpesKey<T> key);
+    default boolean contains(@NotNull VulpesKey<T> key) {
+        return contains(key.key());
+    }
 
     /**
      * Checks if the given key is registered.
@@ -76,4 +79,9 @@ public sealed interface Registry<T extends VulpesKey<T>> extends Keyed permits I
      * @return the collection of values
      */
     @NotNull Collection<T> values();
+
+    interface EntryLoader<T extends VulpesKey<T>> {
+
+        List<T> get(@NotNull String namespace);
+    }
 }
