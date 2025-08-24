@@ -9,7 +9,7 @@ import java.util.Map;
 
 public interface RegistryFactory {
 
-    static  <T extends VulpesKey<T>> @NotNull Registry<T> createRegistry(@NotNull Key registryKey, Registry.@NotNull EntryLoader<T> loader) {
+    static  <T extends VulpesKey> @NotNull Registry<T> createRegistry(@NotNull Key registryKey, Registry.@NotNull EntryLoader<T> loader) {
         List<T> loadedEntries = loader.get(registryKey.value());
         Map<Key, T> namespaces = HashMap.newHashMap(loadedEntries.size());
 

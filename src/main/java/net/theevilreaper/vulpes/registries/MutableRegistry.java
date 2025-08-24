@@ -4,7 +4,7 @@ import net.kyori.adventure.key.Key;
 import org.jetbrains.annotations.NotNull;
 
 
-public sealed interface MutableRegistry<T extends VulpesKey<T>> extends Registry<T> permits VulpesMutableRegistry {
+public sealed interface MutableRegistry<T extends VulpesKey> extends Registry<T> permits VulpesMutableRegistry {
 
     /**
      * Registers a new object in the registry.
@@ -13,7 +13,7 @@ public sealed interface MutableRegistry<T extends VulpesKey<T>> extends Registry
      * @param object the object to register
      * @return the registered object
      */
-    default @NotNull VulpesKey<T> register(@NotNull String name, @NotNull T object) {
+    default @NotNull VulpesKey register(@NotNull String name, @NotNull T object) {
         return register(Key.key(name), object);
     }
 
@@ -24,7 +24,7 @@ public sealed interface MutableRegistry<T extends VulpesKey<T>> extends Registry
      * @param object the object to register
      * @return the registered object
      */
-    @NotNull VulpesKey<T> register(@NotNull Key key, @NotNull T object);
+    @NotNull VulpesKey register(@NotNull Key key, @NotNull T object);
 
     /**
      * Removes the given key from the registry.

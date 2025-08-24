@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
  * @version 1.0.0
  * @since 0.1.0
  */
-public interface VulpesKey<T> extends Keyed {
+public interface VulpesKey extends Keyed {
 
     /**
      * Returns the name of the key.

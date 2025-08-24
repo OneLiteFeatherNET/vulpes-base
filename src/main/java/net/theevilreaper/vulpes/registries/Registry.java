@@ -18,7 +18,7 @@ import java.util.List;
  * @since 0.1.0
  */
 @ApiStatus.NonExtendable
-public sealed interface Registry<T extends VulpesKey<T>> extends Keyed permits ImmutableRegistry, MutableRegistry {
+public sealed interface Registry<T extends VulpesKey> extends Keyed permits ImmutableRegistry, MutableRegistry {
 
     /**
      * Returns the size of the registry.
@@ -36,22 +36,12 @@ public sealed interface Registry<T extends VulpesKey<T>> extends Keyed permits I
     @Nullable T get(@NotNull Key key);
 
     /**
-     * Returns the value for the given key.
-     *
-     * @param key the key to get the value for
-     * @return the value for the given key or null if the key is not registered
-     */
-    default @Nullable T get(@NotNull VulpesKey<T> key) {
-        return get(key.key());
-    }
-
-    /**
      * Checks if the given key is registered.
      *
      * @param key the key to check
      * @return true if the key is registered otherwise false
      */
-    default boolean contains(@NotNull VulpesKey<T> key) {
+    default boolean contains(@NotNull VulpesKey key) {
         return contains(key.key());
     }
 
@@ -80,7 +70,7 @@ public sealed interface Registry<T extends VulpesKey<T>> extends Keyed permits I
      */
     @NotNull Collection<T> values();
 
-    interface EntryLoader<T extends VulpesKey<T>> {
+    interface EntryLoader<T extends VulpesKey> {
 
         List<T> get(@NotNull String namespace);
     }

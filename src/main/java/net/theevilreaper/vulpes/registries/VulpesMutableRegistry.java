@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class VulpesMutableRegistry<T extends VulpesKey<T>> implements MutableRegistry<T> {
+public final class VulpesMutableRegistry<T extends VulpesKey> implements MutableRegistry<T> {
 
     private static final Object LOCK = new Object();
     private final Key key;
@@ -21,7 +21,7 @@ public final class VulpesMutableRegistry<T extends VulpesKey<T>> implements Muta
      */
     VulpesMutableRegistry(@NotNull Key key, @NotNull Map<Key, T> dataMap) {
         this.key = key;
-        this.dataMap = new HashMap<>();
+        this.dataMap = new HashMap<>(dataMap);
     }
 
     /**
@@ -81,11 +81,11 @@ public final class VulpesMutableRegistry<T extends VulpesKey<T>> implements Muta
     }
 
     @Override
-    public @NotNull VulpesKey<T> register(@NotNull Key key, @NotNull T object) {
+    public @NotNull VulpesKey register(@NotNull Key key, @NotNull T object) {
         synchronized (LOCK) {
             this.dataMap.put(key, object);
         }
-        return null;
+        return object;
     }
 
     @Override

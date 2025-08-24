@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.Map;
 
 @ApiStatus.Internal
-final class ImmutableRegistry<T extends VulpesKey<T>> implements Registry<T> {
+final class ImmutableRegistry<T extends VulpesKey> implements Registry<T> {
 
     private final Key key;
     private final Map<Key, T> dataMap;
@@ -44,7 +44,7 @@ final class ImmutableRegistry<T extends VulpesKey<T>> implements Registry<T> {
      * {@inheritDoc}
      */
     @Override
-    public boolean contains(@NotNull VulpesKey<T> key) {
+    public boolean contains(@NotNull VulpesKey key) {
         return this.dataMap.containsKey(key.key());
     }
 
