@@ -9,5 +9,5 @@ import org.jetbrains.annotations.NotNull;
  *
  * @param key the key for the object
  */
-public record StringKey(@NotNull Key key) implements VulpesKey<StringKey> {
+public record StringKey(@NotNull Key key, @NotNull String value) implements VulpesKey {
 }

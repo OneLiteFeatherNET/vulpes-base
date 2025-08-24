@@ -18,7 +18,7 @@ class VulpesKeyTest {
 
     @Test
     void testKey() {
-        VulpesKey<StringKey> vulpesKey = new StringKey(key);
+        VulpesKey vulpesKey = new StringKey(key, "test");
         assertNotNull(vulpesKey);
         assertEquals(key, vulpesKey.key());
     }

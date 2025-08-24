@@ -24,8 +24,8 @@ class ImmutableRegistryTest {
         registryKey = Key.key("vulpes", "test");
         staticRegistry = RegistryFactory.createRegistry(registryKey, namespace -> {
             List<StringKey> entries = new ArrayList<>();
-            entries.add(new StringKey(Key.key("vulpes", "test1")));
-            entries.add(new StringKey(Key.key("vulpes", "test2")));
+            entries.add(new StringKey(Key.key("vulpes", "test1"), "test"));
+            entries.add(new StringKey(Key.key("vulpes", "test2"), "test2"));
             return entries;
         });
 
@@ -41,7 +41,7 @@ class ImmutableRegistryTest {
 
     @Test
     void testContains() {
-        assertTrue(staticRegistry.contains(new StringKey(Key.key("vulpes", "test1"))));
+        assertTrue(staticRegistry.contains(new StringKey(Key.key("vulpes", "test1"), "test")));
         assertFalse(staticRegistry.contains(Key.key("vulpes", "test3")));
     }
 
@@ -50,5 +50,6 @@ class ImmutableRegistryTest {
         var fetchedKey = staticRegistry.get(Key.key("vulpes", "test1"));
         assertNotNull(fetchedKey);
         assertInstanceOf(StringKey.class, fetchedKey);
+        assertEquals("test", fetchedKey.value());
     }
 }
