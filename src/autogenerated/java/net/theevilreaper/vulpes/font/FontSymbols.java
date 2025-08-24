@@ -1,8 +1,8 @@
 package net.theevilreaper.vulpes.font;
 
-import net.kyori.adventure.key.Key;
-
+/**
+ * This class is generated in a later step.
+ * Don't add any kind of logic here.
+ */
 public sealed interface FontSymbols permits FontSymbol {
-
-    FontSymbol TEST = BitFontSymbol.get(Key.key("test", "test"));
 }
