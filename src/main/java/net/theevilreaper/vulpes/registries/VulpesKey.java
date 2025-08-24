@@ -2,7 +2,6 @@ package net.theevilreaper.vulpes.registries;
 
 import net.kyori.adventure.key.Keyed;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * The {@link VulpesKey} interface contains the basic method structure for different kind of keys.
