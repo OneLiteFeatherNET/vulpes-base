@@ -9,8 +9,8 @@ import java.util.Map;
 
 public interface RegistryFactory {
 
-    static  <T extends VulpesKey> @NotNull Registry<T> createRegistry(@NotNull Key registryKey, Registry.@NotNull EntryLoader<T> loader) {
-        List<T> loadedEntries = loader.get(registryKey.value());
+    static  <T extends VulpesKey> @NotNull Registry<T> createRegistry(@NotNull Key registryKey, Registry.@NotNull EntryLoader<T> loader, @NotNull RegistryResources registryResources) {
+        List<T> loadedEntries = loader.get(RegistryData.getRegistryData(registryResources));
         Map<Key, T> namespaces = HashMap.newHashMap(loadedEntries.size());
 
         for (T loadedEntry : loadedEntries) {

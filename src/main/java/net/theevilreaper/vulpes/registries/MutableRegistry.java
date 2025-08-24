@@ -1,9 +1,11 @@
 package net.theevilreaper.vulpes.registries;
 
 import net.kyori.adventure.key.Key;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
-
+@ApiStatus.Experimental
+@ApiStatus.NonExtendable
 public sealed interface MutableRegistry<T extends VulpesKey> extends Registry<T> permits VulpesMutableRegistry {
 
     /**

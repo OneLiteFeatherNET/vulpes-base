@@ -6,6 +6,7 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.List;
 
@@ -70,8 +71,9 @@ public sealed interface Registry<T extends VulpesKey> extends Keyed permits Immu
      */
     @NotNull Collection<T> values();
 
+    @FunctionalInterface
     interface EntryLoader<T extends VulpesKey> {
 
-        List<T> get(@NotNull String namespace);
+        List<T> get(InputStream inputStream);
     }
 }
