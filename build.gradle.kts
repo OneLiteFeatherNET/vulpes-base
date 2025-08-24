@@ -15,10 +15,11 @@ dependencies {
         exclude(group = "com.github.Minestom", module = "Minestom")
     }
     compileOnly(libs.minestom)
-    testImplementation(platform(libs.mycelium.bom))
+
     testImplementation(libs.minestom)
-    testImplementation(libs.cyano)
     testImplementation(libs.junit.api)
+    testImplementation(libs.junit.params)
+    testImplementation(libs.junit.platform.launcher)
     testRuntimeOnly(libs.junit.engine)
 }
 
