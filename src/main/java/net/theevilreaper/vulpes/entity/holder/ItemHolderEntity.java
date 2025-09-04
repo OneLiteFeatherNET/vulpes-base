@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
  * The holder entity allows the given entity to hold a given {@link AbstractItem}.
  * @author theEvilReaper
  * @version 1.0.0
- * @since 1.0.0
+ * @since 0.1.0
  **/
 @SuppressWarnings("java:S3252")
 public abstract class ItemHolderEntity extends Entity {

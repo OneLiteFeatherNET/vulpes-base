@@ -26,7 +26,7 @@ import java.util.function.BiFunction;
  * Use {@link #create(BiFunction)} to create an adapter with a custom key creation function.
  * Use {@link #createMinestom()} to create an adapter with a custom key({@link Key}) creation function for Minestom.
  *
- * @since 1.0.0
+ * @since 0.1.0
  * @version 1.0.0
  * @see Key
  * @see Key#key(String, String)

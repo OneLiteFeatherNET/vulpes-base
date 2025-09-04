@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 /**
  * @author phillippglanz
  * @version 1.0.0
- * @since 1.0.0
+ * @since 0.1.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface MetaKey {
