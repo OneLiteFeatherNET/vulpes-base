@@ -80,6 +80,9 @@ public final class VulpesMutableRegistry<T extends VulpesKey> implements Mutable
         return this.key;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public @NotNull VulpesKey register(@NotNull Key key, @NotNull T object) {
         synchronized (LOCK) {
@@ -88,8 +91,11 @@ public final class VulpesMutableRegistry<T extends VulpesKey> implements Mutable
         return object;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public boolean remove(@NotNull Key key) throws UnsupportedOperationException {
-        return false;
+    public boolean remove(@NotNull Key key) {
+        throw new UnsupportedOperationException("Remove operation is not supported");
     }
 }
