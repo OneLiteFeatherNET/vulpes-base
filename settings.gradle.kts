@@ -25,9 +25,10 @@ dependencyResolutionManagement {
         create("libs") {
             version("shadow", "9.1.0")
             version("bom", "1.4.3")
+            version("worldSeed", "11.5.4")
 
             library("mycelium.bom", "net.onelitefeather", "mycelium-bom").versionRef("bom")
-            library("minestom","net.minestom", "minestom").withoutVersion()
+            library("minestom", "net.minestom", "minestom").withoutVersion()
             library("cyano", "net.onelitefeather", "cyano").withoutVersion()
 
             library("junit.api", "org.junit.jupiter", "junit-jupiter-api").withoutVersion()
@@ -35,7 +36,7 @@ dependencyResolutionManagement {
             library("junit.engine", "org.junit.jupiter", "junit-jupiter-engine").withoutVersion()
             library("junit.platform.launcher", "org.junit.platform", "junit-platform-launcher").withoutVersion()
 
-            library("worldSeed", "net.worldseed.multipart", "WorldSeedEntityEngine").version("11.5.4")
+            library("worldSeed", "net.worldseed.multipart", "WorldSeedEntityEngine").versionRef("worldSeed")
 
             plugin("shadow", "com.gradleup.shadow").versionRef("shadow")
         }
