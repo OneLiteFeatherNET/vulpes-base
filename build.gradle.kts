@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "net.theevilreaper"
-version = "0.5.1"
+version = "0.1.0"
 
 sourceSets {
     main {
