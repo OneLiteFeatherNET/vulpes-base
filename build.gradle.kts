@@ -1,7 +1,6 @@
 plugins {
-    java
-    `java-library`
     jacoco
+    `java-library`
     `maven-publish`
     alias(libs.plugins.shadow)
 }
