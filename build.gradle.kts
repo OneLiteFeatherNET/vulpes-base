@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "net.theevilreaper"
-version = "0.1.0"
+version = "0.0.1"
 
 sourceSets {
     main {
@@ -19,9 +19,7 @@ sourceSets {
 
 dependencies {
     implementation(platform(libs.mycelium.bom))
-    compileOnly(libs.worldSeed) {
-        exclude(group = "com.github.Minestom", module = "Minestom")
-    }
+    compileOnly(libs.worldSeed)
     compileOnly(libs.minestom)
 
     testImplementation(libs.minestom)
