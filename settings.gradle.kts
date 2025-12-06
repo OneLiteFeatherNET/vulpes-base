@@ -23,7 +23,7 @@ dependencyResolutionManagement {
 
     versionCatalogs {
         create("libs") {
-            version("shadow", "9.2.2")
+            version("shadow", "9.3.0")
             version("bom", "1.5.2")
             version("worldSeed", "11.5.5")
 
