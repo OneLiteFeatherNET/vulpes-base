@@ -24,7 +24,7 @@ dependencyResolutionManagement {
     versionCatalogs {
         create("libs") {
             version("shadow", "9.3.0")
-            version("bom", "1.5.3")
+            version("bom", "1.6.0")
             version("worldSeed", "11.5.5")
 
             library("mycelium.bom", "net.onelitefeather", "mycelium-bom").versionRef("bom")
