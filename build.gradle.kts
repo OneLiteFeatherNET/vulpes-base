@@ -5,7 +5,7 @@ plugins {
     alias(libs.plugins.shadow)
 }
 
-group = "net.theevilreaper"
+group = "net.onelitefeather"
 version = "0.0.1"
 
 sourceSets {
