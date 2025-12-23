@@ -22,3 +22,22 @@ jobs:
         run: ./gradlew build
       - name: Publish to Maven
         run: ./gradlew publish
+      - name: Generate CycloneDX BOM
+        run: ./gradlew cyclonedxBom
+      - name: Strip leading v from tag
+        if: startsWith(github.ref, 'refs/tags/')
+        run: echo "VERSION=${GITHUB_REF_NAME#v}" >> "$GITHUB_ENV"
+      - run: |
+          echo "Version: $VERSION"
+        name: Display Version
+      - name: Upload BOM to Dependency-Track
+        uses: DependencyTrack/gh-upload-sbom@v3
+        with:
+          serverhostname: ${{ secrets.DEPENDENCYTRACK_HOSTNAME }}
+          apikey: ${{ secrets.DEPENDENCYTRACK_APIKEY }}
+          projectname: "Vulpes Base"
+          projectversion: ${{ env.VERSION }}
+          projecttags: 'java,minestom'
+          bomfilename: "build/reports/cyclonedx/bom.xml"
+          autocreate: true
+          parent: 'b82ab979-123b-4b6a-a9db-494ab852eebb'

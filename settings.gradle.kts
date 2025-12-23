@@ -26,6 +26,7 @@ dependencyResolutionManagement {
             version("shadow", "9.3.0")
             version("bom", "1.6.0")
             version("worldSeed", "11.5.5")
+            version("cyclonedx", "3.0.1")
 
             library("mycelium.bom", "net.onelitefeather", "mycelium-bom").versionRef("bom")
             library("minestom", "net.minestom", "minestom").withoutVersion()
@@ -39,6 +40,7 @@ dependencyResolutionManagement {
             library("worldSeed", "net.worldseed.multipart", "WorldSeedEntityEngine").versionRef("worldSeed")
 
             plugin("shadow", "com.gradleup.shadow").versionRef("shadow")
+            plugin("cyclonedx", "org.cyclonedx.bom").versionRef("cyclonedx")
         }
     }
 }
