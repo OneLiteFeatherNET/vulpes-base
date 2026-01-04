@@ -3,6 +3,7 @@ package net.onelitefeather.vulpes.render.number;
 import net.kyori.adventure.key.Key;
 import net.onelitefeather.vulpes.render.NumberFontRenderer;
 import net.onelitefeather.vulpes.render.annotation.NumberRange;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -11,6 +12,7 @@ public class NumberFontRendererAnnotationTest {
 
     private static final Key FONT_KEY = Key.key("test", "font");
 
+    @DisplayName("Test NumberFontRenderer with NumberRange annotation")
     @Test
     void testFontRendererClassWhichContainsAnnotation() {
         NumberFontRenderer renderer =
@@ -27,6 +29,7 @@ public class NumberFontRendererAnnotationTest {
         );
     }
 
+    @DisplayName("Test NumberFontRenderer without NumberRange annotation")
     @Test
     void testFontRendererClassWhichContainsNoAnnotation() {
         IllegalStateException exception = assertThrows(
@@ -39,7 +42,6 @@ public class NumberFontRendererAnnotationTest {
                 exception.getMessage()
         );
     }
-
 
     @NumberRange(max = 999, startUnicode = 0xE000)
     static class AnnotatedNumberFontRenderer extends NumberFontRenderer {
