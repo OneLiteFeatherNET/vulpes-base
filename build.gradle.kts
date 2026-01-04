@@ -22,8 +22,10 @@ dependencies {
     implementation(platform(libs.mycelium.bom))
     compileOnly(libs.worldSeed)
     compileOnly(libs.minestom)
+    compileOnly(libs.adventure)
 
     testImplementation(libs.minestom)
+    testImplementation(libs.adventure)
     testImplementation(libs.junit.api)
     testImplementation(libs.junit.params)
     testImplementation(libs.junit.platform.launcher)
