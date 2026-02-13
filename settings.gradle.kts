@@ -26,7 +26,7 @@ dependencyResolutionManagement {
             version("shadow", "9.3.1")
             version("bom", "1.6.1")
             version("worldSeed", "11.5.6")
-            version("cyclonedx", "3.1.0")
+            version("cyclonedx", "3.2.0")
 
             library("mycelium.bom", "net.onelitefeather", "mycelium-bom").versionRef("bom")
             library("minestom", "net.minestom", "minestom").withoutVersion()
