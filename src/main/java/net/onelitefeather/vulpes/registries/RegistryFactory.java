@@ -1,7 +1,6 @@
 package net.onelitefeather.vulpes.registries;
 
 import net.kyori.adventure.key.Key;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,10 +17,10 @@ public interface RegistryFactory {
      * @param <T>               the type of the registry entries
      * @return the created registry instance
      */
-    static <T extends VulpesKey> @NotNull Registry<T> createRegistry(
-            @NotNull Key registryKey,
-            Registry.@NotNull EntryLoader<T> loader,
-            @NotNull RegistryResources registryResources
+    static <T extends VulpesKey> Registry<T> createRegistry(
+            Key registryKey,
+            Registry.EntryLoader<T> loader,
+            RegistryResources registryResources
     ) {
         List<T> loadedEntries = loader.get(RegistryData.getRegistryData(registryResources));
         Map<Key, T> namespaces = HashMap.newHashMap(loadedEntries.size());

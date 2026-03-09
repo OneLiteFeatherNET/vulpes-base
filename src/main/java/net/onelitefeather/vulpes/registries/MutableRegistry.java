@@ -2,7 +2,6 @@ package net.onelitefeather.vulpes.registries;
 
 import net.kyori.adventure.key.Key;
 import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.NotNull;
 
 @ApiStatus.Experimental
 @ApiStatus.NonExtendable
@@ -15,7 +14,7 @@ public sealed interface MutableRegistry<T extends VulpesKey> extends Registry<T>
      * @param object the object to register
      * @return the registered object
      */
-    default @NotNull VulpesKey register(@NotNull String name, @NotNull T object) {
+    default VulpesKey register(String name, T object) {
         return register(Key.key(name), object);
     }
 
@@ -26,7 +25,7 @@ public sealed interface MutableRegistry<T extends VulpesKey> extends Registry<T>
      * @param object the object to register
      * @return the registered object
      */
-    @NotNull VulpesKey register(@NotNull Key key, @NotNull T object);
+    VulpesKey register(Key key, T object);
 
     /**
      * Removes the given key from the registry.
@@ -35,6 +34,6 @@ public sealed interface MutableRegistry<T extends VulpesKey> extends Registry<T>
      * @return true if the key was removed otherwise false
      * @throws UnsupportedOperationException if the registry does not support removal
      */
-    boolean remove(@NotNull Key key) throws UnsupportedOperationException;
+    boolean remove(Key key) throws UnsupportedOperationException;
 
 }

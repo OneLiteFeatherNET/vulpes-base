@@ -1,7 +1,6 @@
 package net.onelitefeather.vulpes.registries;
 
 import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +14,7 @@ import java.nio.file.Path;
  * The {@link RegistryData} class contains helper methods for loading registry data.
  *
  * @author theEvilReaper
- * @version 0.1.0
+ * @version 0.2.0
  * @since 0.6.0
  */
 @ApiStatus.Internal
@@ -29,7 +28,7 @@ final class RegistryData {
      * @param registryResources the registry resources to load the data from
      * @return the loaded data or null if the data could not be loaded
      */
-    static @Nullable InputStream getRegistryData(@NotNull RegistryResources registryResources) {
+    static @Nullable InputStream getRegistryData(RegistryResources registryResources) {
         String path = registryResources.getPath();
         InputStream resourceStream = RegistryData.class.getClassLoader().getResourceAsStream(path);
         final Path filesystemPath = Path.of(path);

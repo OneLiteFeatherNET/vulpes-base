@@ -3,7 +3,6 @@ package net.onelitefeather.vulpes.registries;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.key.Keyed;
 import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.InputStream;
@@ -15,7 +14,7 @@ import java.util.List;
  *
  * @param <T> the type of the registry
  * @author theEvilReaper
- * @version 1.0.0
+ * @version 1.1.0
  * @since 0.1.0
  */
 @ApiStatus.NonExtendable
@@ -34,7 +33,7 @@ public sealed interface Registry<T extends VulpesKey> extends Keyed permits Immu
      * @param key the key to get the value for
      * @return the value for the given key or null if the key is not registered
      */
-    @Nullable T get(@NotNull Key key);
+    @Nullable T get(Key key);
 
     /**
      * Checks if the given key is registered.
@@ -42,7 +41,7 @@ public sealed interface Registry<T extends VulpesKey> extends Keyed permits Immu
      * @param key the key to check
      * @return true if the key is registered otherwise false
      */
-    default boolean contains(@NotNull VulpesKey key) {
+    default boolean contains(VulpesKey key) {
         return contains(key.key());
     }
 
@@ -52,7 +51,7 @@ public sealed interface Registry<T extends VulpesKey> extends Keyed permits Immu
      * @param key the key to check
      * @return true if the key is registered otherwise false
      */
-    boolean contains(@NotNull Key key);
+    boolean contains(Key key);
 
     /**
      * Returns all registered keys.
@@ -61,7 +60,7 @@ public sealed interface Registry<T extends VulpesKey> extends Keyed permits Immu
      *
      * @return the collection of keys
      */
-    @NotNull Collection<Key> keys();
+    Collection<Key> keys();
 
     /**
      * Returns all registered values.
@@ -69,7 +68,7 @@ public sealed interface Registry<T extends VulpesKey> extends Keyed permits Immu
      *
      * @return the collection of values
      */
-    @NotNull Collection<T> values();
+    Collection<T> values();
 
     @FunctionalInterface
     interface EntryLoader<T extends VulpesKey> {

@@ -1,7 +1,6 @@
 package net.onelitefeather.vulpes.font;
 
 import net.onelitefeather.vulpes.registries.VulpesKey;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnmodifiableView;
 
 import java.util.List;
@@ -27,7 +26,6 @@ public sealed interface FontSymbol extends FontSymbols, VulpesKey permits BitFon
      *
      * @return the symbols
      */
-    @NotNull
     @UnmodifiableView
     List<String> symbols();
 }

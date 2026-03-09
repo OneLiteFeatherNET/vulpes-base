@@ -10,8 +10,9 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * The holder entity allows the given entity to hold a given {@link AbstractItem}.
+ *
  * @author theEvilReaper
- * @version 1.0.0
+ * @version 1.1.0
  * @since 0.1.0
  **/
 @SuppressWarnings("java:S3252")
@@ -22,13 +23,12 @@ public abstract class ItemHolderEntity extends Entity {
 
     /**
      * Creates a new instance from the holder entity.
-     * @param instance The instance for the entity
+     *
+     * @param instance   The instance for the entity
      * @param spawnPoint The spawn point from the entity
-     * @param item The item for the entity to hold
+     * @param item       The item for the entity to hold
      */
-    protected ItemHolderEntity(@NotNull Instance instance,
-                            @NotNull Point spawnPoint,
-                            @NotNull AbstractItem item) {
+    protected ItemHolderEntity(Instance instance, Point spawnPoint, AbstractItem item) {
         super(EntityType.SNOWBALL);
         this.item = item;
         var meta = (SnowballMeta) this.getEntityMeta();
@@ -48,6 +48,7 @@ public abstract class ItemHolderEntity extends Entity {
 
     /**
      * Updates the boolean value behind it.
+     *
      * @param active The new value to set
      */
     public void setActive(boolean active) {
@@ -56,6 +57,7 @@ public abstract class ItemHolderEntity extends Entity {
 
     /**
      * Returns if the item is active or not.
+     *
      * @return True when the item is active otherwise false
      */
     @Override
@@ -65,9 +67,9 @@ public abstract class ItemHolderEntity extends Entity {
 
     /**
      * Returns the Item which is bound to the entity.
+     *
      * @return the given instance
      */
-    @NotNull
     public AbstractItem getItem() {
         return item;
     }

@@ -4,7 +4,6 @@ import net.minestom.server.coordinate.Point;
 import net.minestom.server.coordinate.Vec;
 import net.minestom.server.instance.Instance;
 import net.onelitefeather.vulpes.item.AbstractItem;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -15,7 +14,7 @@ import java.util.concurrent.ThreadLocalRandom;
  *
  * Some credits are also goes to https://github.com/Moulberry for the idea and code explanation in his stream
  * @author theEvilReaper
- * @version 1.0.0
+ * @version 1.1.0
  * @since 0.1.0
  **/
 public class FloatingYHolder extends ItemHolderEntity {
@@ -41,12 +40,12 @@ public class FloatingYHolder extends ItemHolderEntity {
      * @param end The end vector for the movement
      * @param interpolationType THe type for the interpolation
      */
-    public FloatingYHolder(@NotNull Instance instance,
-                           @NotNull Point spawnPoint,
-                           @NotNull AbstractItem item,
-                           @NotNull Vec start,
-                           @NotNull Vec end,
-                           @NotNull Vec.Interpolation interpolationType) {
+    public FloatingYHolder(Instance instance,
+                           Point spawnPoint,
+                           AbstractItem item,
+                           Vec start,
+                           Vec end,
+                           Vec.Interpolation interpolationType) {
         super(instance, spawnPoint, item);
         this.start = start;
         this.end = end;
@@ -61,11 +60,11 @@ public class FloatingYHolder extends ItemHolderEntity {
      * @param start The start vector for the movement
      * @param end The end vector for the movement
      */
-    public FloatingYHolder(@NotNull Instance instance,
-                           @NotNull Point spawnPoint,
-                           @NotNull AbstractItem item,
-                           @NotNull Vec start,
-                           @NotNull Vec end) {
+    public FloatingYHolder(Instance instance,
+                           Point spawnPoint,
+                           AbstractItem item,
+                           Vec start,
+                           Vec end) {
         super(instance, spawnPoint, item);
         this.start = start;
         this.end = end;

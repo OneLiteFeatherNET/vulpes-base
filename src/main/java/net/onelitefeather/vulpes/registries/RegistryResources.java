@@ -1,12 +1,10 @@
 package net.onelitefeather.vulpes.registries;
 
-import org.jetbrains.annotations.NotNull;
-
 /**
  * Enum containing all resources used by the registry.
  *
  * @author theEvilReaper
- * @version 1.0.0
+ * @version 1.1.0
  * @since 0.6.0
  */
 public enum RegistryResources {
@@ -30,7 +28,7 @@ public enum RegistryResources {
      *
      * @return the path
      */
-    public @NotNull String getPath() {
+    public String getPath() {
         return path;
     }
 }

@@ -8,7 +8,7 @@ import org.jetbrains.annotations.Nullable;
  *
  * @author theEvilReaper
  * @since 0.1.0
- * @version 1.0.0
+ * @version 1.1.0
  */
 @ApiStatus.Internal
 public enum AnimationType {
@@ -27,7 +27,7 @@ public enum AnimationType {
     private final int id;
     private final String name;
 
-    AnimationType(int id, @NotNull String name) {
+    AnimationType(int id, String name) {
         this.id = id;
         this.name = name;
     }

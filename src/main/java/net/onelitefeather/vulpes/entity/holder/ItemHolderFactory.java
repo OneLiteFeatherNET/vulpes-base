@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
  * The factory allows the creation of different instances of the {@link ItemHolderEntity}.
  *
  * @author theEvilReaper
- * @version 1.0.0
+ * @version 1.1.0
  * @since 0.1.0
  **/
 @ApiStatus.Experimental
@@ -30,9 +30,7 @@ public final class ItemHolderFactory {
      * @return the created instance to the {@link Holder}
      */
     @Contract("_, _, _ -> new")
-    public static @NotNull Holder createHolder(@NotNull Instance instance,
-                                               @NotNull Point spawnPos,
-                                               @NotNull AbstractItem itemStack) {
+    public static Holder createHolder(Instance instance, Point spawnPos, AbstractItem itemStack) {
         return new Holder(instance, spawnPos, itemStack);
     }
 
@@ -47,11 +45,11 @@ public final class ItemHolderFactory {
      * @return the created instance to the {@link FloatingYHolder}
      */
     @Contract("_, _, _, _, _ -> new")
-    public static @NotNull FloatingYHolder createYFloating(@NotNull Instance instance,
-                                                           @NotNull Point spawnPos,
-                                                           @NotNull AbstractItem itemStack,
-                                                           @NotNull Vec start,
-                                                           @NotNull Vec end) {
+    public static FloatingYHolder createYFloating(Instance instance,
+                                                           Point spawnPos,
+                                                           AbstractItem itemStack,
+                                                           Vec start,
+                                                           Vec end) {
         return new FloatingYHolder(instance, spawnPos, itemStack, start, end);
     }
 
@@ -67,12 +65,12 @@ public final class ItemHolderFactory {
      * @return the created instance to the {@link FloatingYHolder}
      */
     @Contract("_, _, _, _, _, _ -> new")
-    public static @NotNull FloatingYHolder createYFloating(@NotNull Instance instance,
-                                                           @NotNull Point spawnPos,
-                                                           @NotNull AbstractItem itemStack,
-                                                           @NotNull Vec start,
-                                                           @NotNull Vec end,
-                                                           @NotNull Vec.Interpolation interpolation) {
+    public static FloatingYHolder createYFloating(Instance instance,
+                                                           Point spawnPos,
+                                                           AbstractItem itemStack,
+                                                           Vec start,
+                                                           Vec end,
+                                                           Vec.Interpolation interpolation) {
         return new FloatingYHolder(instance, spawnPos, itemStack, start, end, interpolation);
     }
 }

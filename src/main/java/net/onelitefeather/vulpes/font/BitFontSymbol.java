@@ -11,7 +11,6 @@ import net.onelitefeather.vulpes.gson.KeyGsonAdapter;
 import net.onelitefeather.vulpes.registries.Registry;
 import net.onelitefeather.vulpes.registries.RegistryFactory;
 import net.onelitefeather.vulpes.registries.RegistryResources;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,10 +22,10 @@ import java.util.List;
 import java.util.Objects;
 
 public record BitFontSymbol(
-        @NotNull Key key,
+        Key key,
         int ascent,
         int height,
-        @NotNull List<String> symbols
+        List<String> symbols
 ) implements FontSymbol {
 
     private static final Gson GSON = new GsonBuilder()
@@ -41,7 +40,7 @@ public record BitFontSymbol(
         return REGISTRY.get(key);
     }
 
-    private static @NotNull @Unmodifiable List<BitFontSymbol> loadEntries(@NotNull InputStream inputStream) {
+    private static @Unmodifiable List<BitFontSymbol> loadEntries(InputStream inputStream) {
         JsonArray jsonElements = GSON.fromJson(new InputStreamReader(inputStream, StandardCharsets.UTF_8), JsonArray.class);
         return jsonElements.asList().stream()
                 .map(JsonElement::getAsJsonObject)
@@ -60,12 +59,12 @@ public record BitFontSymbol(
     static class BitFontSymbolCodec implements Codec<BitFontSymbol, JsonObject, Throwable, Throwable> {
 
         @Override
-        public @NotNull BitFontSymbol decode(@NotNull JsonObject encoded) throws Throwable {
+        public BitFontSymbol decode(JsonObject encoded) throws Throwable {
             return GSON.fromJson(encoded, BitFontSymbol.class);
         }
 
         @Override
-        public @NotNull JsonObject encode(@NotNull BitFontSymbol decoded) throws Throwable {
+        public JsonObject encode(BitFontSymbol decoded) throws Throwable {
             return GSON.toJsonTree(decoded).getAsJsonObject();
         }
     }

@@ -1,7 +1,6 @@
 package net.onelitefeather.vulpes.item;
 
 import net.minestom.server.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * @author theEvilReaper
@@ -16,5 +15,5 @@ public interface ItemFunction {
      *
      * @param player The player who receives the item
      */
-    void apply(@NotNull Player player, @NotNull ItemData itemData);
+    void apply(Player player, ItemData itemData);
 }
