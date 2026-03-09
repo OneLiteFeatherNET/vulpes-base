@@ -1,7 +1,6 @@
 package net.onelitefeather.vulpes.registries;
 
 import net.kyori.adventure.key.Key;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
@@ -19,7 +18,7 @@ public final class VulpesMutableRegistry<T extends VulpesKey> implements Mutable
      * @param key the key for the registry
      * @param dataMap the data map for the registry
      */
-    VulpesMutableRegistry(@NotNull Key key, @NotNull Map<Key, T> dataMap) {
+    VulpesMutableRegistry(Key key, Map<Key, T> dataMap) {
         this.key = key;
         this.dataMap = new HashMap<>(dataMap);
     }
@@ -36,7 +35,7 @@ public final class VulpesMutableRegistry<T extends VulpesKey> implements Mutable
      * {@inheritDoc}
      */
     @Override
-    public @Nullable T get(@NotNull Key key) {
+    public @Nullable T get(Key key) {
         return this.dataMap.get(key);
     }
 
@@ -44,7 +43,7 @@ public final class VulpesMutableRegistry<T extends VulpesKey> implements Mutable
      * {@inheritDoc}
      */
     @Override
-    public boolean contains(@NotNull VulpesKey key) {
+    public boolean contains(VulpesKey key) {
         return this.dataMap.containsKey(key.key());
     }
 
@@ -52,7 +51,7 @@ public final class VulpesMutableRegistry<T extends VulpesKey> implements Mutable
      * {@inheritDoc}
      */
     @Override
-    public boolean contains(@NotNull Key key) {
+    public boolean contains(Key key) {
         return this.dataMap.containsKey(key);
     }
 
@@ -60,7 +59,7 @@ public final class VulpesMutableRegistry<T extends VulpesKey> implements Mutable
      * {@inheritDoc}
      */
     @Override
-    public @NotNull Collection<Key> keys() {
+    public Collection<Key> keys() {
         return this.dataMap.keySet();
     }
 
@@ -68,7 +67,7 @@ public final class VulpesMutableRegistry<T extends VulpesKey> implements Mutable
      * {@inheritDoc}
      */
     @Override
-    public @NotNull Collection<T> values() {
+    public Collection<T> values() {
         return this.dataMap.values();
     }
 
@@ -76,7 +75,7 @@ public final class VulpesMutableRegistry<T extends VulpesKey> implements Mutable
      * {@inheritDoc}
      */
     @Override
-    public @NotNull Key key() {
+    public Key key() {
         return this.key;
     }
 
@@ -84,7 +83,7 @@ public final class VulpesMutableRegistry<T extends VulpesKey> implements Mutable
      * {@inheritDoc}
      */
     @Override
-    public @NotNull VulpesKey register(@NotNull Key key, @NotNull T object) {
+    public VulpesKey register(Key key, T object) {
         synchronized (LOCK) {
             this.dataMap.put(key, object);
         }
@@ -95,7 +94,7 @@ public final class VulpesMutableRegistry<T extends VulpesKey> implements Mutable
      * {@inheritDoc}
      */
     @Override
-    public boolean remove(@NotNull Key key) {
+    public boolean remove(Key key) {
         throw new UnsupportedOperationException("Remove operation is not supported");
     }
 }

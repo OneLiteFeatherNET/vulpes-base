@@ -2,7 +2,6 @@ package net.onelitefeather.vulpes.registries;
 
 import net.kyori.adventure.key.Key;
 import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
@@ -19,7 +18,7 @@ final class ImmutableRegistry<T extends VulpesKey> implements Registry<T> {
      * @param key the key for the registry
      * @param dataMap the data map for the registry
      */
-    ImmutableRegistry(@NotNull Key key, @NotNull Map<Key, T> dataMap) {
+    ImmutableRegistry(Key key, Map<Key, T> dataMap) {
         this.key = key;
         this.dataMap = Map.copyOf(dataMap);
     }
@@ -36,7 +35,7 @@ final class ImmutableRegistry<T extends VulpesKey> implements Registry<T> {
      * {@inheritDoc}
      */
     @Override
-    public @Nullable T get(@NotNull Key key) {
+    public @Nullable T get(Key key) {
         return this.dataMap.get(key);
     }
 
@@ -44,7 +43,7 @@ final class ImmutableRegistry<T extends VulpesKey> implements Registry<T> {
      * {@inheritDoc}
      */
     @Override
-    public boolean contains(@NotNull VulpesKey key) {
+    public boolean contains(VulpesKey key) {
         return this.dataMap.containsKey(key.key());
     }
 
@@ -52,7 +51,7 @@ final class ImmutableRegistry<T extends VulpesKey> implements Registry<T> {
      * {@inheritDoc}
      */
     @Override
-    public boolean contains(@NotNull Key key) {
+    public boolean contains(Key key) {
         return this.dataMap.containsKey(key);
     }
 
@@ -60,7 +59,7 @@ final class ImmutableRegistry<T extends VulpesKey> implements Registry<T> {
      * {@inheritDoc}
      */
     @Override
-    public @NotNull Collection<Key> keys() {
+    public Collection<Key> keys() {
         return this.dataMap.keySet();
     }
 
@@ -68,7 +67,7 @@ final class ImmutableRegistry<T extends VulpesKey> implements Registry<T> {
      * {@inheritDoc}
      */
     @Override
-    public @NotNull Collection<T> values() {
+    public Collection<T> values() {
         return this.dataMap.values();
     }
 
@@ -76,7 +75,7 @@ final class ImmutableRegistry<T extends VulpesKey> implements Registry<T> {
      * {@inheritDoc}
      */
     @Override
-    public @NotNull Key key() {
+    public Key key() {
         return this.key;
     }
 }

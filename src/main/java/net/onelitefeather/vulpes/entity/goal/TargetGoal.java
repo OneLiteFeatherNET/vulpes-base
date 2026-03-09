@@ -7,7 +7,6 @@ import net.minestom.server.entity.Player;
 import net.minestom.server.entity.ai.TargetSelector;
 import net.minestom.server.utils.chunk.ChunkUtils;
 import net.onelitefeather.vulpes.entity.MetaKey;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @MetaKey("target")
@@ -15,7 +14,7 @@ public class TargetGoal extends TargetSelector {
 
     private final int distance;
 
-    public TargetGoal(@NotNull EntityCreature creature, int distance) {
+    public TargetGoal(EntityCreature creature, int distance) {
         super(creature);
 
         this.distance = distance;

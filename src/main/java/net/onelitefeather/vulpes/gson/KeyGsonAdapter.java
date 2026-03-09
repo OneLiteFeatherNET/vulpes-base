@@ -5,7 +5,7 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import net.kyori.adventure.key.Key;
 import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.util.function.BiFunction;
@@ -27,7 +27,7 @@ import java.util.function.BiFunction;
  * Use {@link #createMinestom()} to create an adapter with a custom key({@link Key}) creation function for Minestom.
  *
  * @since 0.1.0
- * @version 1.0.0
+ * @version 1.1.0
  * @see Key
  * @see Key#key(String, String)
  * @author TheMeinerLP
@@ -36,7 +36,7 @@ public class KeyGsonAdapter extends TypeAdapter<Key> {
 
     private final BiFunction<String, String, Key> createKeyObject;
 
-    private KeyGsonAdapter(@NotNull BiFunction<String, String, Key> createKeyObject) {
+    private KeyGsonAdapter(BiFunction<String, String, Key> createKeyObject) {
         this.createKeyObject = createKeyObject;
     }
 
@@ -49,7 +49,7 @@ public class KeyGsonAdapter extends TypeAdapter<Key> {
      * @return the new instance of the {@link KeyGsonAdapter}
      */
     @Contract(value = " -> new", pure = true)
-    public static @NotNull KeyGsonAdapter create() {
+    public static KeyGsonAdapter create() {
         return new KeyGsonAdapter();
     }
 
@@ -59,7 +59,7 @@ public class KeyGsonAdapter extends TypeAdapter<Key> {
      * @return the new instance of the {@link KeyGsonAdapter}
      */
     @Contract(value = "_ -> new", pure = true)
-    public static @NotNull KeyGsonAdapter create(@NotNull BiFunction<String, String, Key> createKeyObject) {
+    public static KeyGsonAdapter create(BiFunction<String, String, Key> createKeyObject) {
         return new KeyGsonAdapter(createKeyObject);
     }
 
@@ -67,21 +67,25 @@ public class KeyGsonAdapter extends TypeAdapter<Key> {
      * Creates a new instance of the {@link KeyGsonAdapter} with a custom key) creation function for Minestom.
      * @return the new instance of the {@link KeyGsonAdapter}
      */
-    public static @NotNull KeyGsonAdapter createMinestom() {
+    public static KeyGsonAdapter createMinestom() {
         return new KeyGsonAdapter(Key::key);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void write(JsonWriter out, Key value) throws IOException {
-        if (value == null) {
-            return;
-        }
+    public void write(JsonWriter out, @Nullable Key value) throws IOException {
+        if (value == null) return;
         out.beginObject();
         out.name("namespace").value(value.namespace());
         out.name("value").value(value.value());
         out.endObject();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Key read(JsonReader in) throws IOException {
         in.beginObject();

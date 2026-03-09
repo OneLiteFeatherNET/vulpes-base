@@ -3,12 +3,11 @@ package net.onelitefeather.vulpes.entity.holder;
 import net.minestom.server.coordinate.Point;
 import net.minestom.server.instance.Instance;
 import net.onelitefeather.vulpes.item.AbstractItem;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Implementation for a static holder entity.
  * @author theEvilReaper
- * @version 1.0.0
+ * @version 1.1.0
  * @since 0.1.0
  **/
 public class Holder extends ItemHolderEntity {
@@ -19,7 +18,7 @@ public class Holder extends ItemHolderEntity {
      * @param spawnPoint The spawn point from the entity
      * @param item The item for the entity to hold
      */
-    public Holder(@NotNull Instance instance, @NotNull Point spawnPoint, @NotNull AbstractItem item) {
+    public Holder(Instance instance, Point spawnPoint, AbstractItem item) {
         super(instance, spawnPoint, item);
     }
 

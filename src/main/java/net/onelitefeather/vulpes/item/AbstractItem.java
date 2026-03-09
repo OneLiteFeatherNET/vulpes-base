@@ -2,7 +2,6 @@ package net.onelitefeather.vulpes.item;
 
 import net.minestom.server.entity.Player;
 import net.minestom.server.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
@@ -10,7 +9,7 @@ import java.util.UUID;
 
 /**
  * @author theEvilReaper
- * @version 1.0.0
+ * @version 1.1.0
  * @since 0.1.0
  **/
 public class AbstractItem {
@@ -25,11 +24,11 @@ public class AbstractItem {
 
     private final ItemStack itemStack;
 
-    public AbstractItem(@NotNull ItemStack itemStack) {
+    public AbstractItem(ItemStack itemStack) {
         this.itemStack = itemStack;
     }
 
-    public AbstractItem(@NotNull ItemStack itemStack, @NotNull ItemData itemData) {
+    public AbstractItem(ItemStack itemStack, ItemData itemData) {
         this.itemStack = itemStack;
         this.itemData = itemData;
     }
@@ -38,7 +37,7 @@ public class AbstractItem {
      * Set a {@link ItemFunction} to the item class.
      * @param itemFunction the function to set
      */
-    public void setItemFunction(@NotNull ItemFunction itemFunction) {
+    public void setItemFunction(ItemFunction itemFunction) {
         this.itemFunction = itemFunction;
     }
 
@@ -46,12 +45,11 @@ public class AbstractItem {
      * Applies the data from the item to a player.
      * @param player the player who should get the data
      */
-    public void applyToPlayer(@NotNull Player player) {
+    public void applyToPlayer(Player player) {
         if (itemFunction == null || itemData == null) return;
         this.itemFunction.apply(player, itemData);
     }
 
-    @NotNull
     public ItemMetaData getItemMetaData() {
         if (itemMetaData == null && getClass().isAnnotationPresent(ItemMetaData.class)) {
             this.itemMetaData = getClass().getAnnotation(ItemMetaData.class);
@@ -77,7 +75,6 @@ public class AbstractItem {
      * Returns the {@link ItemStack} behind the item.
      * @return the given {@link ItemStack}
      */
-    @NotNull
     public ItemStack getItem() {
         return itemStack;
     }
@@ -86,7 +83,6 @@ public class AbstractItem {
      * Returns the {@link ItemType} from the item.
      * @return the given {@link ItemType}
      */
-    @NotNull
     public ItemType getItemCategory() {
         return itemMetaData.type();
     }
@@ -95,7 +91,6 @@ public class AbstractItem {
      * Returns the {@link ItemRarity} from the item.
      * @return the given {@link ItemRarity}
      */
-    @NotNull
     public ItemRarity getItemRarity() {
         return itemMetaData.rarity();
     }
@@ -113,7 +108,6 @@ public class AbstractItem {
      * Returns the uuid from the item.
      * @return the given uuid
      */
-    @NotNull
     public UUID getId() {
         return id;
     }
