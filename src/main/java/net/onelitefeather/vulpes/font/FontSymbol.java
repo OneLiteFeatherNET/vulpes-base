@@ -2,6 +2,7 @@ package net.onelitefeather.vulpes.font;
 
 import net.minestom.server.codec.Codec;
 import net.minestom.server.codec.StructCodec;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -37,4 +38,39 @@ public record FontSymbol(
             "chars", Codec.STRING.list(), FontSymbol::chars,
             FontSymbol::new
     );
+
+    /**
+     * Checks if this font symbol has any characters defined.
+     *
+     * @return true if the chars list is not empty, false otherwise
+     */
+    public boolean hasChars() {
+        return !chars.isEmpty();
+    }
+
+    /**
+     * Returns the character at the given index.
+     *
+     * @param index the index of the character
+     * @return the character at the given index or null if the index is out of bounds
+     */
+    public @Nullable String getChar(int index) {
+        if (index < 0 || index >= chars.size()) {
+            return null;
+        }
+        return chars.get(index);
+    }
+
+    /**
+     * Returns the overwritten character based on the index, otherwise it returns the default value.
+     *
+     * @param index        the index of the character
+     * @param defaultValue the default value
+     * @return the overwritten character or the default value
+     */
+    public String getCharOr(int index, String defaultValue) {
+        return (index >= 0 && index < this.chars.size())
+                ? this.chars.get(index)
+                : defaultValue;
+    }
 }
