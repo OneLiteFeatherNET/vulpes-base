@@ -1,6 +1,7 @@
 package net.onelitefeather.vulpes.font;
 
-import net.kyori.adventure.key.Key;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -9,17 +10,66 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class FontSymbolTest {
 
-    @Test
-    void testFontCreationWithoutFactory() {
-        Key key = Key.key("vulpes", "test");
-        FontSymbol fontSymbol = new BitFontSymbol(key, 10, 20, List.of("\u12ca"));
-        assertNotNull(fontSymbol);
-        assertInstanceOf(BitFontSymbol.class, fontSymbol);
+    private static final String TEST_JSON =
+            """
+                    {
+                      "file": "manis:global/player_ranks/admin.png",
+                      "type": "bitmap",
+                      "ascent": 10,
+                      "height": 10,
+                      "chars": [
+                        ""
+                      ]
+                    }
+                    """;
 
-        assertEquals(key, fontSymbol.key());
-        assertEquals(10, fontSymbol.ascent());
-        assertEquals(20, fontSymbol.height());
-        assertEquals(1, fontSymbol.symbols().size());
-        assertEquals(List.of("\u12ca"), fontSymbol.symbols());
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+
+    @Test
+    void testNameTagRead() {
+        FontSymbol tag = new FontSymbol(
+                "manis:global/player_ranks/admin.png",
+                "bitmap",
+                10,
+                10,
+                List.of("\uE120")
+        );
+
+        FontSymbol loadedText = GSON.fromJson(TEST_JSON, FontSymbol.class);
+        assertNotNull(loadedText);
+
+        assertEquals(tag.file(), loadedText.file());
+        assertEquals(tag.type(), loadedText.type());
+        assertEquals(tag.ascent(), loadedText.ascent());
+        assertEquals(tag.height(), loadedText.height());
+        assertEquals(1,  tag.chars().size());
+        assertEquals(tag.chars(), loadedText.chars());
+    }
+
+    @Test
+    void testNameTagMethod() {
+        FontSymbol loadedText = GSON.fromJson(TEST_JSON, FontSymbol.class);
+        assertNotNull(loadedText);
+
+        assertTrue(loadedText.hasChars());
+        assertEquals("\uE120", loadedText.getChar(0));
+        assertEquals("\uE120", loadedText.chars().getFirst());
+
+        assertNull(loadedText.getChar(1));
+        assertNull(loadedText.getChar(-1));
+        assertEquals("\uE000", loadedText.getCharOr(1, "\uE000"));
+        assertEquals("\uE000", loadedText.getCharOr(-1, "\uE000"));
+    }
+
+    @Test
+    void testEmptyChars() {
+        FontSymbol tag = new FontSymbol(
+                "manis:global/player_ranks/admin.png",
+                "bitmap",
+                10,
+                10,
+                List.of()
+        );
+        assertFalse(tag.hasChars());
     }
 }
