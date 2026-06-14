@@ -27,11 +27,12 @@ dependencyResolutionManagement {
             version("bom", "1.6.7")
             version("worldSeed", "11.6.1")
             version("cyclonedx", "3.2.4")
+            version("slf4j", "2.0.18")
 
             library("mycelium.bom", "net.onelitefeather", "mycelium-bom").versionRef("bom")
             library("minestom", "net.minestom", "minestom").withoutVersion()
             library("cyano", "net.onelitefeather", "cyano").withoutVersion()
-
+            library("slf4j.api", "org.slf4j", "slf4j-api").versionRef("slf4j")
             library("junit.api", "org.junit.jupiter", "junit-jupiter-api").withoutVersion()
             library("junit.params", "org.junit.jupiter", "junit-jupiter-params").withoutVersion()
             library("junit.engine", "org.junit.jupiter", "junit-jupiter-engine").withoutVersion()
