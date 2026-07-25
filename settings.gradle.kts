@@ -24,7 +24,7 @@ dependencyResolutionManagement {
     versionCatalogs {
         create("libs") {
             version("shadow", "9.6.1")
-            version("bom", "1.7.2")
+            version("bom", "1.8.1")
             version("worldSeed", "11.6.1")
             version("cyclonedx", "3.3.0")
             version("slf4j", "2.0.18")
