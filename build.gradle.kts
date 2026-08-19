@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "net.onelitefeather"
-version = "0.0.1"
+version = "0.0.0" // x-release-please-version
 
 sourceSets {
     main {
