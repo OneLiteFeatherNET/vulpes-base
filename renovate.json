@@ -1,12 +1,8 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended"
+    "github>OneLiteFeatherNET/renovate:default(OneLiteFeatherNET/vulpes-maintainer)"
   ],
-  "labels": [
-    "Renovate"
-  ],
-  "rebaseWhen": "conflicted",
   "packageRules": [
     {
       "matchUpdateTypes": [
@@ -15,11 +11,5 @@
       "automerge": true,
       "automergeType": "branch"
     }
-  ],
-  "vulnerabilityAlerts": {
-    "labels": [
-      "security"
-    ],
-    "automerge": true
-  }
+  ]
 }
