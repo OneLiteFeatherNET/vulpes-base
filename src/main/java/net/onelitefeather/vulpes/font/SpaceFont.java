@@ -15,9 +15,9 @@ import org.jetbrains.annotations.Contract;
  * <b>Resource-pack contract:</b> this class only produces correct visual
  * offsets if the consuming project's resource pack ships a {@code space:default}
  * bitmap font whose glyphs have exactly the rendered pixel advances implied by
- * this class's codepoints — the negative-offset glyphs ({@code NEG_1}..{@code
- * NEG_256}) advancing by {@code -1}..{@code -256}px, the positive-offset glyphs
- * ({@code POS_1}..{@code POS_256}, plus {@code ZERO}) advancing by {@code
+ * this class's codepoints — the negative-offset glyphs ({@code \u005CuF001}..{@code
+ * \u005CuF00D}) advancing by {@code -1}..{@code -256}px, the positive-offset glyphs
+ * ({@code \u005CuF00F}..{@code \u005CuF01B}, plus {@link #ZERO}) advancing by {@code
  * 0}..{@code 256}px, and the vanilla {@code ' '} (space) character also mapped
  * to {@code +1}px. The exact, authoritative codepoint-to-pixel-advance mapping
  * is the {@code space:default} object in {@code src/main/resources/font/font-widths.json},
@@ -31,42 +31,25 @@ import org.jetbrains.annotations.Contract;
  */
 public final class SpaceFont {
 
-    private static final Key FONT_KEY = Key.key("space", "default");
+    public static final Key FONT_KEY = Key.key("space", "default");
     private static final Component RESET = Component.empty().font(Style.DEFAULT_FONT);
 
-    // --- Negative offsets ---
-    private static final char NEG_1   = '\uF001';
-    private static final char NEG_2   = '\uF002';
-    private static final char NEG_3   = '\uF003';
-    private static final char NEG_4   = '\uF004';
-    private static final char NEG_5   = '\uF005';
-    private static final char NEG_6   = '\uF006';
-    private static final char NEG_7   = '\uF007';
-    private static final char NEG_8   = '\uF008';
-    private static final char NEG_16  = '\uF009';
-    private static final char NEG_32  = '\uF00A';
-    private static final char NEG_64  = '\uF00B';
-    private static final char NEG_128 = '\uF00C';
-    private static final char NEG_256 = '\uF00D';
-
-    // --- Positive offsets ---
-    private static final char ZERO    = '\uF00E'; // 0 (no-op, useful as placeholder)
-    private static final char POS_1   = '\uF00F';
-    // ' ' (space) = 1 as well
-    private static final char POS_2   = '\uF010';
-    private static final char POS_3   = '\uF011';
-    private static final char POS_4   = '\uF012';
-    private static final char POS_5   = '\uF013';
-    private static final char POS_6   = '\uF014';
-    private static final char POS_7   = '\uF015';
-    private static final char POS_8   = '\uF016';
-    private static final char POS_16  = '\uF017';
-    private static final char POS_32  = '\uF018';
-    private static final char POS_64  = '\uF019';
-    private static final char POS_128 = '\uF01A';
-    private static final char POS_256 = '\uF01B';
-
     private static final int[] MAGNITUDES = {256, 128, 64, 32, 16, 8, 7, 6, 5, 4, 3, 2, 1};
+
+    private static final char BASE_NEGATIVE_CODEPOINT = '\uF001';
+    public static final char ZERO                    = '\uF00E';
+    private static final char BASE_POSITIVE_CODEPOINT = '\uF00F';
+
+    private static final char[] NEGATIVE_GLYPHS = new char[MAGNITUDES.length];
+    private static final char[] POSITIVE_GLYPHS = new char[MAGNITUDES.length];
+
+    static {
+        for (int i = 0; i < MAGNITUDES.length; i++) {
+            int offset = MAGNITUDES.length - 1 - i;
+            NEGATIVE_GLYPHS[i] = (char) (BASE_NEGATIVE_CODEPOINT + offset);
+            POSITIVE_GLYPHS[i] = (char) (BASE_POSITIVE_CODEPOINT + offset);
+        }
+    }
 
     private SpaceFont() {}
 
@@ -78,8 +61,7 @@ public final class SpaceFont {
      */
     @Contract(pure = true)
     public static Component negative(int pixels) {
-        return Component.text(build(pixels, true))
-                .font(FONT_KEY).append(RESET);
+        return createComponent(pixels, true);
     }
 
     /**
@@ -90,8 +72,7 @@ public final class SpaceFont {
      */
     @Contract(pure = true)
     public static Component positive(int pixels) {
-        return Component.text(build(pixels, false))
-                .font(FONT_KEY).append(RESET);
+        return createComponent(pixels, false);
     }
 
     /**
@@ -106,6 +87,12 @@ public final class SpaceFont {
 
     // --- Internal ---
 
+    private static Component createComponent(int pixels, boolean negative) {
+        return Component.text(build(pixels, negative))
+                .font(FONT_KEY)
+                .append(RESET);
+    }
+
     /**
      * Converts a given amount of pixels into a char representation to shift them around
      * @param pixels the amount of pixels to shift
@@ -117,51 +104,16 @@ public final class SpaceFont {
 
         StringBuilder sb = new StringBuilder();
         int remaining = pixels;
+        char[] glyphs = negative ? NEGATIVE_GLYPHS : POSITIVE_GLYPHS;
 
-        for (int magnitude : MAGNITUDES) {
+        for (int i = 0; i < MAGNITUDES.length; i++) {
+            int magnitude = MAGNITUDES[i];
+            char glyph = glyphs[i];
             while (remaining >= magnitude) {
-                sb.append(negative ? negChar(magnitude) : posChar(magnitude));
+                sb.append(glyph);
                 remaining -= magnitude;
             }
         }
         return sb.toString();
-    }
-
-    private static char negChar(int magnitude) {
-        return switch (magnitude) {
-            case 256 -> NEG_256;
-            case 128 -> NEG_128;
-            case 64  -> NEG_64;
-            case 32  -> NEG_32;
-            case 16  -> NEG_16;
-            case 8   -> NEG_8;
-            case 7   -> NEG_7;
-            case 6   -> NEG_6;
-            case 5   -> NEG_5;
-            case 4   -> NEG_4;
-            case 3   -> NEG_3;
-            case 2   -> NEG_2;
-            case 1   -> NEG_1;
-            default  -> throw new IllegalArgumentException("Unsupported magnitude: " + magnitude);
-        };
-    }
-
-    private static char posChar(int magnitude) {
-        return switch (magnitude) {
-            case 256 -> POS_256;
-            case 128 -> POS_128;
-            case 64  -> POS_64;
-            case 32  -> POS_32;
-            case 16  -> POS_16;
-            case 8   -> POS_8;
-            case 7   -> POS_7;
-            case 6   -> POS_6;
-            case 5   -> POS_5;
-            case 4   -> POS_4;
-            case 3   -> POS_3;
-            case 2   -> POS_2;
-            case 1   -> POS_1;
-            default  -> throw new IllegalArgumentException("Unsupported magnitude: " + magnitude);
-        };
     }
 }

@@ -27,7 +27,7 @@ class NegativeSpaceFontTest {
     @Test
     void testCorrectFont() {
         Component component = SpaceFont.negative(8);
-        assertEquals(Key.key("space", "default"), component.font());
+        assertEquals(SpaceFont.FONT_KEY, component.font());
     }
 
     @ParameterizedTest(name = "Test invalid space input for {0}")
