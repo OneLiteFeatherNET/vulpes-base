@@ -141,7 +141,7 @@ class BackgroundBarTest {
     void testWrapBarSegmentRenderedWidthMatchesComputedBarWidth() {
         Component text = Component.text("Boss Fight");
         int paddingPx = 5;
-        int expectedBarWidth = 2 * paddingPx + TextWidth.widthOf(text);
+        int expectedBarWidth = BackgroundBar.calculateBarWidth(TextWidth.widthOf(text), paddingPx);
 
         Component wrapped = BackgroundBar.wrap(text, paddingPx, NamedTextColor.BLACK, GLYPHS);
         Component barSegment = wrapped.children().get(0);
@@ -162,5 +162,29 @@ class BackgroundBarTest {
         Component text = Component.text("Boss Fight");
         Component wrapped = BackgroundBar.wrap(text, paddingPx, NamedTextColor.BLACK, GLYPHS);
         assertEquals(paddingPx + TextWidth.widthOf(text), TextWidth.widthOf(wrapped));
+    }
+
+    @Test
+    void testCalculateBarWidth() {
+        assertEquals(30, BackgroundBar.calculateBarWidth(20, 5));
+        assertEquals(20, BackgroundBar.calculateBarWidth(20, 0));
+    }
+
+    @Test
+    void testWrapWithCustomBarWidthCalculator() {
+        Component text = Component.text("A");
+        int paddingPx = 4;
+        int customWidth = 50;
+
+        Component wrapped = BackgroundBar.wrap(text, paddingPx, NamedTextColor.BLACK, GLYPHS, (tw, pad) -> customWidth);
+        Component barSegment = wrapped.children().get(0);
+
+        assertEquals(customWidth, TextWidth.widthOf(barSegment));
+    }
+
+    @Test
+    void testWrapWithNullCalculatorThrows() {
+        assertThrows(NullPointerException.class, () ->
+                BackgroundBar.wrap(Component.text("A"), 4, NamedTextColor.BLACK, GLYPHS, null));
     }
 }

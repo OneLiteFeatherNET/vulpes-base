@@ -4,13 +4,32 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import org.jetbrains.annotations.Contract;
 
+import java.util.Objects;
+import java.util.function.IntBinaryOperator;
+
 /**
  * Wraps text in a dynamically-sized background bar built from a project's
  * own bitmap-font glyphs ({@link BarGlyphs}).
  */
 public final class BackgroundBar {
 
+    private static final int HORIZONTAL_PADDING_MULTIPLIER = 2;
+    private static final int GLYPH_ADVANCE_OVERHEAD = 1;
+    private static final Component GLYPH_REWIND = SpaceFont.negative(GLYPH_ADVANCE_OVERHEAD);
+
     private BackgroundBar() {}
+
+    /**
+     * Calculates the total bar width for the given text width and padding.
+     *
+     * @param textWidth the width of the text in pixels
+     * @param paddingPx the padding to apply to each side in pixels
+     * @return the total bar width in pixels
+     */
+    @Contract(pure = true)
+    public static int calculateBarWidth(int textWidth, int paddingPx) {
+        return textWidth + (HORIZONTAL_PADDING_MULTIPLIER * paddingPx);
+    }
 
     /**
      * Wraps {@code text} in a dynamically-sized background bar built from
@@ -38,12 +57,42 @@ public final class BackgroundBar {
      */
     @Contract(pure = true)
     public static Component wrap(Component text, int paddingPx, TextColor tint, BarGlyphs glyphs) {
+        return wrap(text, paddingPx, tint, glyphs, BackgroundBar::calculateBarWidth);
+    }
+
+    /**
+     * Wraps {@code text} in a dynamically-sized background bar built from
+     * {@code glyphs}, using {@code barWidthCalculator} to compute the total bar width.
+     *
+     * @param text               the component to render on top of the bar; only its own
+     *                           style is used, this method never mutates or restyles it
+     * @param paddingPx          pixels of padding to add on each side of {@code text}'s
+     *                           measured width; must be {@code >= 0}
+     * @param tint               the color applied to the bar's glyphs
+     * @param glyphs             the project's bar font configuration
+     * @param barWidthCalculator functional interface for calculating total bar width
+     *                           from text width and padding
+     * @return {@code text} wrapped with a background bar, or {@code text}
+     * unchanged if its measured pixel width is {@code <= 0} (e.g. it is empty or
+     * only contains non-{@link net.kyori.adventure.text.TextComponent} content)
+     * @throws IllegalArgumentException if {@code paddingPx} is negative
+     * @throws NullPointerException     if {@code barWidthCalculator} is null
+     */
+    @Contract(pure = true)
+    public static Component wrap(
+            Component text,
+            int paddingPx,
+            TextColor tint,
+            BarGlyphs glyphs,
+            IntBinaryOperator barWidthCalculator
+    ) {
         if (paddingPx < 0) throw new IllegalArgumentException("paddingPx must be >= 0, got " + paddingPx);
+        Objects.requireNonNull(barWidthCalculator, "barWidthCalculator cannot be null");
 
         int textWidth = TextWidth.widthOf(text);
         if (textWidth <= 0) return text;
 
-        int barWidth = 2 * paddingPx + textWidth;
+        int barWidth = barWidthCalculator.applyAsInt(textWidth, paddingPx);
 
         return Component.empty()
                 .append(buildBar(barWidth, tint, glyphs))
@@ -75,9 +124,9 @@ public final class BackgroundBar {
     @Contract(pure = true)
     static Component buildBar(int barWidth, TextColor tint, BarGlyphs glyphs) {
         Component bar = Component.empty().font(glyphs.font()).color(tint);
-        for (char glyph : buildBarGlyphs(barWidth - 1, glyphs).toCharArray()) {
+        for (char glyph : buildBarGlyphs(barWidth - BarGlyphs.END_GLYPH_WIDTH, glyphs).toCharArray()) {
             bar = bar.append(Component.text(String.valueOf(glyph)))
-                    .append(SpaceFont.negative(1));
+                    .append(GLYPH_REWIND);
         }
         return bar;
     }
@@ -87,7 +136,7 @@ public final class BackgroundBar {
         int remaining = width;
         char[] power = glyphs.powerGlyphs();
 
-        for (int bit = 7; bit >= 0; bit--) {
+        for (int bit = power.length - 1; bit >= 0; bit--) {
             int magnitude = 1 << bit;
             while (remaining >= magnitude) {
                 sb.append(power[bit]);
