@@ -22,7 +22,7 @@ class BarGlyphsTest {
 
         assertEquals(FONT, barGlyphs.font());
         assertEquals(END_GLYPH, barGlyphs.endGlyph());
-        assertEquals(8, barGlyphs.powerGlyphs().length);
+        assertEquals(BarGlyphs.POWER_GLYPH_COUNT, barGlyphs.powerGlyphs().length);
     }
 
     @Test

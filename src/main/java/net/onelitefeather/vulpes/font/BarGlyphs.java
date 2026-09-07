@@ -26,10 +26,13 @@ import java.util.Objects;
  */
 public record BarGlyphs(Key font, char[] powerGlyphs, char endGlyph) {
 
+    public static final int POWER_GLYPH_COUNT = 8;
+    public static final int END_GLYPH_WIDTH = 1;
+
     public BarGlyphs {
-        if (powerGlyphs.length != 8) {
+        if (powerGlyphs.length != POWER_GLYPH_COUNT) {
             throw new IllegalArgumentException(
-                    "powerGlyphs must have exactly 8 entries (2^0..2^7), got " + powerGlyphs.length);
+                    "powerGlyphs must have exactly " + POWER_GLYPH_COUNT + " entries (2^0..2^7), got " + powerGlyphs.length);
         }
         powerGlyphs = powerGlyphs.clone();
     }
