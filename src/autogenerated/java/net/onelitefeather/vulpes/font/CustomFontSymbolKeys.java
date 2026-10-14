@@ -1,8 +1,11 @@
 package net.onelitefeather.vulpes.font;
 
+import org.jetbrains.annotations.ApiStatus;
+
 /**
  * This class is generated in a later step.
  * Don't add any kind of logic here.
  */
-public interface FontSymbols {
+@ApiStatus.NonExtendable
+public interface CustomFontSymbolKeys {
 }
