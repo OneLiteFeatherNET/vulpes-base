@@ -4,6 +4,8 @@ import net.kyori.adventure.text.Component;
 import net.minestom.server.component.DataComponents;
 import net.minestom.server.item.ItemStack;
 import net.minestom.server.item.Material;
+import net.minestom.server.item.component.EnchantmentList;
+import net.minestom.server.item.enchant.Enchantment;
 import net.minestom.server.MinecraftServer;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -24,6 +26,17 @@ class ItemComponentDecoderTest {
 
         assertEquals(Component.text("Sword"), stack.get(DataComponents.CUSTOM_NAME),
                 "The custom name should be decoded from JSON");
+    }
+
+    @Test
+    void appliesRegistryBackedEnchantments() {
+        ItemStack stack = ItemComponentDecoder.apply(ItemStack.builder(Material.DIAMOND_SWORD),
+                "minecraft:enchantments", "{\"minecraft:sharpness\":5}").build();
+
+        EnchantmentList enchantments = stack.get(DataComponents.ENCHANTMENTS);
+        assertNotNull(enchantments, "The enchantments component should be set");
+        assertEquals(5, enchantments.level(Enchantment.SHARPNESS),
+                "Sharpness should be applied at level 5");
     }
 
     @Test
