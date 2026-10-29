@@ -50,6 +50,15 @@ class CustomAdvancementGraphTest {
     }
 
     @Test
+    void validateCycleNamesEveryKeyOfTheCycle() {
+        IllegalStateException ex = assertThrows(IllegalStateException.class,
+                () -> CustomAdvancementGraph.validate(List.of(adv("a", "b"), adv("b", "a"))), "Cycles must be rejected");
+
+        assertTrue(ex.getMessage().contains("test:a") && ex.getMessage().contains("test:b"),
+                "Message should name both keys of the cycle: " + ex.getMessage());
+    }
+
+    @Test
     void rootsAreSortedByKey() {
         List<CustomAdvancement> all = List.of(adv("zeta", null), adv("alpha", null), adv("child", "alpha"));
 

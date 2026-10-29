@@ -5,6 +5,7 @@ import net.minestom.server.advancements.Advancement;
 import net.minestom.server.advancements.AdvancementManager;
 import net.minestom.server.advancements.AdvancementRoot;
 import net.minestom.server.advancements.AdvancementTab;
+import net.onelitefeather.vulpes.registries.Registry;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -29,34 +30,38 @@ public final class AdvancementTabs {
     /**
      * Returns the given root and all its descendants in topological order.
      *
-     * @param root the root advancement
+     * @param advancements the registry which contains the root and its descendants
+     * @param root         the root advancement
      * @return the root followed by its descendants, a parent always comes before its children
      * @throws IllegalArgumentException if the advancement is not a root
      */
-    public static List<CustomAdvancement> tree(CustomAdvancement root) {
-        return tree(CustomAdvancement.values(), root);
+    public static List<CustomAdvancement> tree(Registry<CustomAdvancement> advancements, CustomAdvancement root) {
+        return tree(advancements.values(), root);
     }
 
     /**
      * Creates the tab of the given root with all its descendants.
      *
-     * @param manager the manager which owns the tab
-     * @param root    the root advancement
+     * @param manager       the manager which owns the tab
+     * @param advancements  the registry which contains the root and its descendants
+     * @param root          the root advancement
      * @return the created tab
      * @throws IllegalArgumentException if the advancement is not a root
      */
-    public static AdvancementTab createTab(AdvancementManager manager, CustomAdvancement root) {
-        return createTab(manager, CustomAdvancement.values(), root);
+    public static AdvancementTab createTab(AdvancementManager manager, Registry<CustomAdvancement> advancements,
+                                           CustomAdvancement root) {
+        return createTab(manager, advancements.values(), root);
     }
 
     /**
-     * Creates one tab for every registered root.
+     * Creates one tab for every root of the given registry.
      *
-     * @param manager the manager which owns the tabs
+     * @param manager      the manager which owns the tabs
+     * @param advancements the registry with the advancements
      * @return the created tabs by the key of their root, sorted by key
      */
-    public static Map<Key, AdvancementTab> createAll(AdvancementManager manager) {
-        return createAll(manager, CustomAdvancement.values());
+    public static Map<Key, AdvancementTab> createAll(AdvancementManager manager, Registry<CustomAdvancement> advancements) {
+        return createAll(manager, advancements.values());
     }
 
     static List<CustomAdvancement> tree(Collection<? extends CustomAdvancement> advancements, CustomAdvancement root) {

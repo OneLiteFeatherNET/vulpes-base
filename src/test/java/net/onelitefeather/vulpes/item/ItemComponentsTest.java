@@ -10,9 +10,11 @@ import net.minestom.server.MinecraftServer;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
-class ItemComponentDecoderTest {
+class ItemComponentsTest {
 
     @BeforeAll
     static void bindRegistries() {
@@ -21,7 +23,7 @@ class ItemComponentDecoderTest {
 
     @Test
     void appliesDecodedComponent() {
-        ItemStack stack = ItemComponentDecoder.apply(ItemStack.builder(Material.STONE),
+        ItemStack stack = ItemComponents.apply(ItemStack.builder(Material.STONE),
                 "minecraft:custom_name", "{\"text\":\"Sword\"}").build();
 
         assertEquals(Component.text("Sword"), stack.get(DataComponents.CUSTOM_NAME),
@@ -30,7 +32,7 @@ class ItemComponentDecoderTest {
 
     @Test
     void appliesRegistryBackedEnchantments() {
-        ItemStack stack = ItemComponentDecoder.apply(ItemStack.builder(Material.DIAMOND_SWORD),
+        ItemStack stack = ItemComponents.apply(ItemStack.builder(Material.DIAMOND_SWORD),
                 "minecraft:enchantments", "{\"minecraft:sharpness\":5}").build();
 
         EnchantmentList enchantments = stack.get(DataComponents.ENCHANTMENTS);
@@ -40,23 +42,32 @@ class ItemComponentDecoderTest {
     }
 
     @Test
+    void appliesLoreAsTextComponents() {
+        ItemStack stack = ItemComponents.apply(ItemStack.builder(Material.STONE),
+                "minecraft:lore", "[{\"text\":\"First\"},{\"text\":\"Second\"}]").build();
+
+        assertEquals(List.of(Component.text("First"), Component.text("Second")), stack.get(DataComponents.LORE),
+                "The lore should be decoded from the JSON list");
+    }
+
+    @Test
     void returnsTheGivenBuilder() {
         ItemStack.Builder builder = ItemStack.builder(Material.STONE);
 
-        assertSame(builder, ItemComponentDecoder.apply(builder), "The same builder should be returned");
+        assertSame(builder, ItemComponents.apply(builder), "The same builder should be returned");
     }
 
     @Test
     void rejectsOddNumberOfArguments() {
         assertThrows(IllegalArgumentException.class,
-                () -> ItemComponentDecoder.apply(ItemStack.builder(Material.STONE), "minecraft:custom_name"),
+                () -> ItemComponents.apply(ItemStack.builder(Material.STONE), "minecraft:custom_name"),
                 "A key without a value must be rejected");
     }
 
     @Test
     void rejectsUnknownComponentNamingTheKey() {
         IllegalStateException ex = assertThrows(IllegalStateException.class,
-                () -> ItemComponentDecoder.apply(ItemStack.builder(Material.STONE), "minecraft:not_a_component", "1"));
+                () -> ItemComponents.apply(ItemStack.builder(Material.STONE), "minecraft:not_a_component", "1"));
 
         assertTrue(ex.getMessage().contains("minecraft:not_a_component"), "Message should name the key: " + ex.getMessage());
     }
@@ -64,7 +75,7 @@ class ItemComponentDecoderTest {
     @Test
     void rejectsMalformedJsonNamingTheKey() {
         IllegalStateException ex = assertThrows(IllegalStateException.class,
-                () -> ItemComponentDecoder.apply(ItemStack.builder(Material.STONE), "minecraft:custom_name", "{"));
+                () -> ItemComponents.apply(ItemStack.builder(Material.STONE), "minecraft:custom_name", "{"));
 
         assertTrue(ex.getMessage().contains("minecraft:custom_name"), "Message should name the key: " + ex.getMessage());
     }
@@ -72,7 +83,7 @@ class ItemComponentDecoderTest {
     @Test
     void rejectsValueThatCannotBeDecodedNamingTheKey() {
         IllegalStateException ex = assertThrows(IllegalStateException.class,
-                () -> ItemComponentDecoder.apply(ItemStack.builder(Material.STONE), "minecraft:max_stack_size", "\"many\""));
+                () -> ItemComponents.apply(ItemStack.builder(Material.STONE), "minecraft:max_stack_size", "\"many\""));
 
         assertTrue(ex.getMessage().contains("minecraft:max_stack_size"), "Message should name the key: " + ex.getMessage());
     }

@@ -22,6 +22,11 @@ class CustomSoundImplTest {
     }
 
     @Test
+    void ofKeepsRangeOfSound() {
+        assertEquals(16.0f, CustomSound.of(KEY, 16.0f).range(), "The factory should keep the range");
+    }
+
+    @Test
     void rejectsZeroRange() {
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
                 () -> new CustomSoundImpl(KEY, 0.0f));
@@ -64,17 +69,5 @@ class CustomSoundImplTest {
     @Test
     void soundEventWithoutRangeIsCreated() {
         assertNotNull(new CustomSoundImpl(KEY, null).soundEvent(), "A sound event is expected without range");
-    }
-
-    @Test
-    void getThrowsForMissingSound() {
-        assertThrows(IllegalStateException.class, () -> CustomSoundImpl.get(Key.key("test", "missing")),
-                "Unknown sounds must be reported");
-    }
-
-    @Test
-    void valuesAreEmptyWithPlaceholderEntries() {
-        assertTrue(CustomSound.values().isEmpty(), "Placeholder entries should yield no sounds");
-        assertNull(CustomSound.fromKey(KEY), "Unknown key should resolve to null");
     }
 }

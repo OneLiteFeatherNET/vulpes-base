@@ -9,17 +9,19 @@ import net.minestom.server.codec.Transcoder;
 import net.minestom.server.component.DataComponent;
 import net.minestom.server.item.ItemStack;
 import net.minestom.server.registry.RegistryTranscoder;
-import org.jetbrains.annotations.ApiStatus;
 
 /**
- * Applies data components which are given as key and JSON pairs to an item stack builder.
+ * Applies vanilla data components, given as key and JSON pairs, to an item stack builder.
  * <p>
- * The generated item entries use this helper so the generated code stays free of logic.
+ * Generated items pass their vanilla component JSON straight through this helper, so the generated code needs
+ * no logic of its own. The key is the component id, for example {@code minecraft:lore}, and the value is the
+ * JSON that the component codec of Minestom decodes.
+ *
+ * @since 1.0.0
  */
-@ApiStatus.Internal
-final class ItemComponentDecoder {
+public final class ItemComponents {
 
-    private ItemComponentDecoder() {
+    private ItemComponents() {
     }
 
     /**
@@ -32,7 +34,7 @@ final class ItemComponentDecoder {
      * @throws IllegalArgumentException if the array has an odd length
      * @throws IllegalStateException    if a component is unknown or its value is not valid JSON or cannot be decoded
      */
-    static ItemStack.Builder apply(ItemStack.Builder builder, String... keyAndJson) {
+    public static ItemStack.Builder apply(ItemStack.Builder builder, String... keyAndJson) {
         if (keyAndJson.length % 2 != 0) {
             throw new IllegalArgumentException("Expected key and JSON value pairs but got " + keyAndJson.length + " arguments");
         }

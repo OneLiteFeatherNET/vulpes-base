@@ -29,6 +29,16 @@ class CustomItemImplTest {
     }
 
     @Test
+    void ofReturnsItemWithKeyAndItemStack() {
+        ItemStack stack = ItemStack.of(Material.DIAMOND_SWORD);
+
+        CustomItem item = CustomItem.of(KEY, stack);
+
+        assertEquals(KEY, item.key(), "The item should keep its key");
+        assertEquals(stack, item.itemStack(), "The item should keep its item stack");
+    }
+
+    @Test
     void rejectsNullKey() {
         assertThrows(NullPointerException.class, () -> new CustomItemImpl(null, ItemStack.of(Material.STONE)),
                 "A null key must be rejected");
@@ -47,17 +57,5 @@ class CustomItemImplTest {
                 () -> new CustomItemImpl(KEY, ItemStack.AIR));
 
         assertTrue(ex.getMessage().contains("test:item"), "Message should name the key: " + ex.getMessage());
-    }
-
-    @Test
-    void getThrowsForMissingItem() {
-        assertThrows(IllegalStateException.class, () -> CustomItemImpl.get(Key.key("test", "missing")),
-                "Unknown items must be reported");
-    }
-
-    @Test
-    void valuesAreEmptyWithPlaceholderEntries() {
-        assertTrue(CustomItem.values().isEmpty(), "Placeholder entries should yield no items");
-        assertNull(CustomItem.fromKey(KEY), "Unknown key should resolve to null");
     }
 }

@@ -7,10 +7,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Validates and orders the parent relations of custom advancements.
@@ -18,7 +19,7 @@ import java.util.Set;
  * Siblings are always sorted by their key, so the result is deterministic.
  */
 @ApiStatus.Internal
-final class CustomAdvancementGraph {
+public final class CustomAdvancementGraph {
 
     private static final Comparator<CustomAdvancement> BY_KEY = Comparator.comparing(advancement -> advancement.key().asString());
 
@@ -31,7 +32,7 @@ final class CustomAdvancementGraph {
      * @param advancements the advancements to check
      * @throws IllegalStateException if a parent is missing or a cycle exists, the message names the key
      */
-    static void validate(Collection<? extends CustomAdvancement> advancements) {
+    public static void validate(Collection<? extends CustomAdvancement> advancements) {
         Map<Key, CustomAdvancement> byKey = new HashMap<>();
         for (CustomAdvancement advancement : advancements) {
             byKey.put(advancement.key(), advancement);
@@ -46,12 +47,14 @@ final class CustomAdvancementGraph {
         }
 
         for (CustomAdvancement advancement : sorted(advancements)) {
-            Set<Key> visited = new HashSet<>();
+            Set<Key> visited = new LinkedHashSet<>();
             Key current = advancement.key();
             while (current != null) {
                 if (!visited.add(current)) {
                     throw new IllegalStateException("The advancement " + advancement.key().asString()
-                            + " is part of a parent cycle");
+                            + " is part of a parent cycle: "
+                            + visited.stream().map(Key::asString).collect(Collectors.joining(" -> "))
+                            + " -> " + current.asString());
                 }
                 current = byKey.get(current).parent();
             }

@@ -92,18 +92,4 @@ class CustomAdvancementImplTest {
 
         assertTrue(created.isHidden(), "The hidden flag must be copied");
     }
-
-    @Test
-    void getThrowsForMissingAdvancement() {
-        assertThrows(IllegalStateException.class, () -> CustomAdvancementImpl.get(Key.key("test", "missing")),
-                "Unknown advancements must be reported");
-    }
-
-    @Test
-    void valuesAreEmptyWithPlaceholderEntries() {
-        assertTrue(CustomAdvancement.values().isEmpty(), "Placeholder entries should yield no advancements");
-        assertNull(CustomAdvancement.fromKey(KEY), "Unknown key should resolve to null");
-        assertTrue(CustomAdvancement.roots().isEmpty(), "Without entries there are no roots");
-        assertTrue(CustomAdvancement.children(PARENT).isEmpty(), "Without entries there are no children");
-    }
 }
