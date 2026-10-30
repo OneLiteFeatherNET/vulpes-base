@@ -8,7 +8,7 @@ import org.jetbrains.annotations.ApiStatus;
 /**
  * A custom item which is defined in code and registered through {@link net.onelitefeather.vulpes.VulpesContent}.
  *
- * @since 1.0.0
+ * @since 0.5.0
  */
 @ApiStatus.NonExtendable
 public sealed interface CustomItem extends VulpesKey permits CustomItemImpl {

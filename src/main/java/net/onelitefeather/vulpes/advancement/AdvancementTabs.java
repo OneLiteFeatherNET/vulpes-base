@@ -20,7 +20,7 @@ import java.util.Objects;
  * Every root becomes one tab which is identified by the string form of its key. All descendants are attached
  * in topological order, so a parent always exists before its children.
  *
- * @since 1.0.0
+ * @since 0.5.0
  */
 public final class AdvancementTabs {
 

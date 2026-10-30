@@ -8,7 +8,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * A custom attribute which is defined in code and registered through {@link net.onelitefeather.vulpes.VulpesContent}.
  *
- * @since 1.0.0
+ * @since 0.5.0
  */
 @ApiStatus.NonExtendable
 public sealed interface CustomAttribute extends VulpesKey permits CustomAttributeImpl {

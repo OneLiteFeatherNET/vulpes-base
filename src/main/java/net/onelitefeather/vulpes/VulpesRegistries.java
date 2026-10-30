@@ -13,7 +13,7 @@ import org.jetbrains.annotations.ApiStatus;
  * <p>
  * The game keeps this instance and passes it to the services which need the entries.
  *
- * @since 1.0.0
+ * @since 0.5.0
  */
 @ApiStatus.NonExtendable
 public sealed interface VulpesRegistries permits VulpesRegistriesImpl {

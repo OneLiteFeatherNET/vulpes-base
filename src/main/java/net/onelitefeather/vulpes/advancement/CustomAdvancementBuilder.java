@@ -14,7 +14,7 @@ import java.util.Objects;
  * The title and the icon are required. The description is empty, the frame is a task, and the
  * position, the toast and the hidden flag keep their defaults unless they are set.
  *
- * @since 1.0.0
+ * @since 0.5.0
  */
 public final class CustomAdvancementBuilder {
 
