@@ -20,6 +20,7 @@ sourceSets {
 dependencies {
     implementation(platform(libs.mycelium.bom))
     implementation(libs.slf4j.api)
+    implementation(libs.evalex)
     compileOnly(libs.worldSeed)
     compileOnly(libs.minestom)
 
