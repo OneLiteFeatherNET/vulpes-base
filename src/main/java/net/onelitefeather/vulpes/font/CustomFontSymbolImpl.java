@@ -1,8 +1,6 @@
 package net.onelitefeather.vulpes.font;
 
 import net.kyori.adventure.key.Key;
-import net.onelitefeather.vulpes.registries.Registry;
-import net.onelitefeather.vulpes.registries.RegistryFactory;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Objects;
@@ -16,9 +14,6 @@ import java.util.Objects;
  */
 @ApiStatus.Internal
 record CustomFontSymbolImpl(Key key, Key font, FontSymbol symbol) implements CustomFontSymbol {
-
-    static final Registry<CustomFontSymbol> REGISTRY =
-            RegistryFactory.of(Key.key("vulpes", "font_symbol"), CustomFontSymbolEntries.entries());
 
     CustomFontSymbolImpl {
         Objects.requireNonNull(key, "key");
@@ -41,20 +36,5 @@ record CustomFontSymbolImpl(Key key, Key font, FontSymbol symbol) implements Cus
             throw new IllegalArgumentException("The ascent " + symbol.ascent() + " of font symbol "
                     + key.asString() + " exceeds the height " + symbol.height());
         }
-    }
-
-    /**
-     * Returns the symbol for the given key.
-     *
-     * @param key the key to look up
-     * @return the symbol
-     * @throws IllegalStateException if the symbol is not registered
-     */
-    static CustomFontSymbol get(Key key) {
-        CustomFontSymbol symbol = REGISTRY.get(key);
-        if (symbol == null) {
-            throw new IllegalStateException("Missing custom font symbol " + key.asString());
-        }
-        return symbol;
     }
 }

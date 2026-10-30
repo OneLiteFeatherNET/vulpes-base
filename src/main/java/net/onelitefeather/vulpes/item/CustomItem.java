@@ -2,23 +2,16 @@ package net.onelitefeather.vulpes.item;
 
 import net.kyori.adventure.key.Key;
 import net.minestom.server.item.ItemStack;
-import net.onelitefeather.vulpes.registries.Registry;
 import net.onelitefeather.vulpes.registries.VulpesKey;
 import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Collection;
 
 /**
- * A custom item which is defined in code and available through a runtime registry.
- * <p>
- * The constants are inherited from the generated {@code CustomItems} interface, the keys
- * are available through {@link CustomItemKeys}.
+ * A custom item which is defined in code and registered through {@link net.onelitefeather.vulpes.VulpesContent}.
  *
  * @since 1.0.0
  */
 @ApiStatus.NonExtendable
-public sealed interface CustomItem extends VulpesKey, CustomItems permits CustomItemImpl {
+public sealed interface CustomItem extends VulpesKey permits CustomItemImpl {
 
     /**
      * Returns the item stack of the item. Item stacks are immutable, so the instance can be shared.
@@ -28,30 +21,15 @@ public sealed interface CustomItem extends VulpesKey, CustomItems permits Custom
     ItemStack itemStack();
 
     /**
-     * Returns the item for the given key.
+     * Creates a custom item which can be passed to {@link net.onelitefeather.vulpes.VulpesContent}.
      *
-     * @param key the key to look up
-     * @return the item or null if no item is registered for the key
+     * @param key       the key of the item
+     * @param itemStack the item stack of the item, must not be air
+     * @return the created item
+     * @throws NullPointerException     if the key or the item stack is null
+     * @throws IllegalArgumentException if the item stack is air
      */
-    static @Nullable CustomItem fromKey(Key key) {
-        return CustomItemImpl.REGISTRY.get(key);
-    }
-
-    /**
-     * Returns all registered items.
-     *
-     * @return the registered items
-     */
-    static Collection<CustomItem> values() {
-        return CustomItemImpl.REGISTRY.values();
-    }
-
-    /**
-     * Returns the registry which contains all custom items.
-     *
-     * @return the registry
-     */
-    static Registry<CustomItem> registry() {
-        return CustomItemImpl.REGISTRY;
+    static CustomItem of(Key key, ItemStack itemStack) {
+        return new CustomItemImpl(key, itemStack);
     }
 }

@@ -7,6 +7,9 @@ import net.minestom.server.advancements.AdvancementTab;
 import net.minestom.server.advancements.FrameType;
 import net.minestom.server.item.ItemStack;
 import net.minestom.server.item.Material;
+import net.onelitefeather.vulpes.TestContent;
+import net.onelitefeather.vulpes.Vulpes;
+import net.onelitefeather.vulpes.VulpesRegistries;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -51,7 +54,26 @@ class AdvancementTabsTest {
     }
 
     @Test
-    void createTabWithoutRegisteredAdvancementsCreatesNoTabs() {
-        assertTrue(AdvancementTabs.createAll(new AdvancementManager()).isEmpty(), "Placeholder entries have no roots");
+    void createAllCreatesOneTabPerRegisteredRoot() {
+        Key one = Key.key("cygnus", "one");
+        VulpesRegistries registries = Vulpes.bootstrap(TestContent.withAdvancements(
+                CustomAdvancement.builder(one).title(Component.text("one")).icon(ItemStack.of(Material.STONE)).build(),
+                CustomAdvancement.builder(Key.key("cygnus", "two")).title(Component.text("two"))
+                        .icon(ItemStack.of(Material.STONE)).build(),
+                CustomAdvancement.builder(Key.key("cygnus", "child")).parent(one).title(Component.text("child"))
+                        .icon(ItemStack.of(Material.STONE)).build()));
+
+        Map<Key, AdvancementTab> tabs = AdvancementTabs.createAll(new AdvancementManager(), registries.advancements());
+
+        assertEquals(List.of(one, Key.key("cygnus", "two")), List.copyOf(tabs.keySet()),
+                "Every registered root should create one tab");
+    }
+
+    @Test
+    void createAllWithoutAdvancementsCreatesNoTabs() {
+        VulpesRegistries registries = Vulpes.bootstrap(TestContent.withItems());
+
+        assertTrue(AdvancementTabs.createAll(new AdvancementManager(), registries.advancements()).isEmpty(),
+                "Without advancements there are no tabs");
     }
 }

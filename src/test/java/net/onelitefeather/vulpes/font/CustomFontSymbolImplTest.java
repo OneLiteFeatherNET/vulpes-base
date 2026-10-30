@@ -25,6 +25,14 @@ class CustomFontSymbolImplTest {
     }
 
     @Test
+    void ofKeepsFontAndChars() {
+        CustomFontSymbol symbol = CustomFontSymbol.of(KEY, FONT, symbol(7, 8, List.of("ab")));
+
+        assertEquals(FONT, symbol.font(), "The factory should keep the font key");
+        assertEquals(List.of("ab"), symbol.chars(), "The factory should keep the chars");
+    }
+
+    @Test
     void acceptsAscentEqualToHeight() {
         assertDoesNotThrow(() -> new CustomFontSymbolImpl(KEY, FONT, symbol(8, 8, List.of("a"))),
                 "An ascent equal to the height is valid");
@@ -64,17 +72,5 @@ class CustomFontSymbolImplTest {
         assertThrows(NullPointerException.class,
                 () -> new CustomFontSymbolImpl(KEY, null, symbol(7, 8, List.of("a"))),
                 "A missing font key must be rejected");
-    }
-
-    @Test
-    void getThrowsForMissingSymbol() {
-        assertThrows(IllegalStateException.class, () -> CustomFontSymbolImpl.get(Key.key("test", "missing")),
-                "Unknown symbols must be reported");
-    }
-
-    @Test
-    void valuesAreEmptyWithPlaceholderEntries() {
-        assertTrue(CustomFontSymbol.values().isEmpty(), "Placeholder entries should yield no symbols");
-        assertNull(CustomFontSymbol.fromKey(KEY), "Unknown key should resolve to null");
     }
 }

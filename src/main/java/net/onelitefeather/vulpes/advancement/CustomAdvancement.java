@@ -5,26 +5,22 @@ import net.kyori.adventure.text.Component;
 import net.minestom.server.advancements.Advancement;
 import net.minestom.server.advancements.FrameType;
 import net.minestom.server.item.ItemStack;
-import net.onelitefeather.vulpes.registries.Registry;
 import net.onelitefeather.vulpes.registries.VulpesKey;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
-import java.util.List;
 
 /**
- * A custom advancement which is defined in code and available through a runtime registry.
+ * A custom advancement which is defined in code and registered through {@link net.onelitefeather.vulpes.VulpesContent}.
  * <p>
  * The definition is immutable. Minestom advancements are mutable and bound to one tab, so
- * {@link #create()} returns a new instance on every call. The constants are inherited from the generated
- * {@code CustomAdvancements} interface, the keys are available through {@link CustomAdvancementKeys}.
+ * {@link #create()} returns a new instance on every call.
  *
  * @since 1.0.0
  */
 @ApiStatus.NonExtendable
-public sealed interface CustomAdvancement extends VulpesKey, CustomAdvancements permits CustomAdvancementImpl {
+public sealed interface CustomAdvancement extends VulpesKey permits CustomAdvancementImpl {
 
     /**
      * Returns the key of the parent advancement.
@@ -115,49 +111,12 @@ public sealed interface CustomAdvancement extends VulpesKey, CustomAdvancements 
     Advancement create();
 
     /**
-     * Returns the advancement for the given key.
+     * Creates a builder for an advancement with the given key.
      *
-     * @param key the key to look up
-     * @return the advancement or null if no advancement is registered for the key
+     * @param key the key of the advancement
+     * @return a new builder
      */
-    static @Nullable CustomAdvancement fromKey(Key key) {
-        return CustomAdvancementImpl.REGISTRY.get(key);
-    }
-
-    /**
-     * Returns all registered advancements.
-     *
-     * @return the registered advancements
-     */
-    static Collection<CustomAdvancement> values() {
-        return CustomAdvancementImpl.REGISTRY.values();
-    }
-
-    /**
-     * Returns the registry which contains all custom advancements.
-     *
-     * @return the registry
-     */
-    static Registry<CustomAdvancement> registry() {
-        return CustomAdvancementImpl.REGISTRY;
-    }
-
-    /**
-     * Returns all roots sorted by their key.
-     *
-     * @return the roots
-     */
-    static List<CustomAdvancement> roots() {
-        return CustomAdvancementGraph.roots(CustomAdvancementImpl.REGISTRY.values());
-    }
-
-    /**
-     * Returns the direct children of the given advancement sorted by their key.
-     *
-     * @param parent the key of the parent
-     * @return the children, empty if there are none
-     */
-    static List<CustomAdvancement> children(Key parent) {
-        return CustomAdvancementGraph.children(CustomAdvancementImpl.REGISTRY.values(), parent);
+    static CustomAdvancementBuilder builder(Key key) {
+        return new CustomAdvancementBuilder(key);
     }
 }

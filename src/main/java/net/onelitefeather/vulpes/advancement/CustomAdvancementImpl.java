@@ -6,12 +6,9 @@ import net.minestom.server.advancements.Advancement;
 import net.minestom.server.advancements.AdvancementRoot;
 import net.minestom.server.advancements.FrameType;
 import net.minestom.server.item.ItemStack;
-import net.onelitefeather.vulpes.registries.Registry;
-import net.onelitefeather.vulpes.registries.RegistryFactory;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -44,8 +41,6 @@ record CustomAdvancementImpl(
         @Nullable String background
 ) implements CustomAdvancement {
 
-    static final Registry<CustomAdvancement> REGISTRY = createRegistry();
-
     CustomAdvancementImpl {
         Objects.requireNonNull(key, "key");
         Objects.requireNonNull(title, "title of advancement " + key.asString());
@@ -63,29 +58,6 @@ record CustomAdvancementImpl(
             throw new IllegalArgumentException("Only a root can have a background but advancement "
                     + key.asString() + " has the parent " + parent.asString());
         }
-    }
-
-    private static Registry<CustomAdvancement> createRegistry() {
-        List<CustomAdvancement> entries = CustomAdvancementEntries.entries();
-        Registry<CustomAdvancement> registry =
-                RegistryFactory.of(Key.key("vulpes", "advancement"), entries);
-        CustomAdvancementGraph.validate(registry.values());
-        return registry;
-    }
-
-    /**
-     * Returns the advancement for the given key.
-     *
-     * @param key the key to look up
-     * @return the advancement
-     * @throws IllegalStateException if the advancement is not registered
-     */
-    static CustomAdvancement get(Key key) {
-        CustomAdvancement advancement = REGISTRY.get(key);
-        if (advancement == null) {
-            throw new IllegalStateException("Missing custom advancement " + key.asString());
-        }
-        return advancement;
     }
 
     @Override
