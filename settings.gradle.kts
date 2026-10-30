@@ -28,11 +28,13 @@ dependencyResolutionManagement {
             version("worldSeed", "13.0.4")
             version("cyclonedx", "3.5.1")
             version("slf4j", "2.0.20")
+            version("evalex", "3.8.0")
 
             library("mycelium.bom", "net.onelitefeather", "mycelium-bom").versionRef("bom")
             library("minestom", "net.minestom", "minestom").withoutVersion()
             library("cyano", "net.onelitefeather", "cyano").withoutVersion()
             library("slf4j.api", "org.slf4j", "slf4j-api").versionRef("slf4j")
+            library("evalex", "com.ezylang", "EvalEx").versionRef("evalex")
             library("junit.api", "org.junit.jupiter", "junit-jupiter-api").withoutVersion()
             library("junit.params", "org.junit.jupiter", "junit-jupiter-params").withoutVersion()
             library("junit.engine", "org.junit.jupiter", "junit-jupiter-engine").withoutVersion()
