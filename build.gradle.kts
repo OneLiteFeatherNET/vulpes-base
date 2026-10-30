@@ -6,7 +6,7 @@ plugins {
     alias(libs.plugins.cyclonedx)
 }
 
-group = "net.onelitefeather"
+group = "net.onelitefeather.vulpes"
 version = "0.0.0" // x-release-please-version
 
 sourceSets {
@@ -63,6 +63,7 @@ tasks {
 publishing {
     publications {
         create<MavenPublication>("maven") {
+            artifactId = "vulpes-base"
             from(components["java"])
         }
     }
