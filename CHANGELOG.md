@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://github.com/OneLiteFeatherNET/vulpes-base/compare/v0.5.0...v0.6.0) (2026-10-30)
+
+
+### Features
+
+* **expression:** evaluate content expressions at runtime ([#112](https://github.com/OneLiteFeatherNET/vulpes-base/issues/112)) ([0300f53](https://github.com/OneLiteFeatherNET/vulpes-base/commit/0300f531fabb4550fed94e052f2a0d5baf1b8239))
+
 ## 0.5.0 (2026-10-30)
 
 
