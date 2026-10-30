@@ -17,7 +17,7 @@ import java.util.Map;
  * at server start. The entries are built with the public factories of this library, so the content does not depend
  * on any generated type of {@code vulpes-base}.
  *
- * @since 1.0.0
+ * @since 0.5.0
  */
 public interface VulpesContent {
 

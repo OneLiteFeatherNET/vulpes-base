@@ -17,7 +17,7 @@ import net.minestom.server.registry.RegistryTranscoder;
  * no logic of its own. The key is the component id, for example {@code minecraft:lore}, and the value is the
  * JSON that the component codec of Minestom decodes.
  *
- * @since 1.0.0
+ * @since 0.5.0
  */
 public final class ItemComponents {
 

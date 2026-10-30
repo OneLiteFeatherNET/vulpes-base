@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
  * The definition is immutable. Minestom advancements are mutable and bound to one tab, so
  * {@link #create()} returns a new instance on every call.
  *
- * @since 1.0.0
+ * @since 0.5.0
  */
 @ApiStatus.NonExtendable
 public sealed interface CustomAdvancement extends VulpesKey permits CustomAdvancementImpl {

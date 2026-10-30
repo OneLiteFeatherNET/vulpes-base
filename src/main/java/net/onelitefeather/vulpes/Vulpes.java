@@ -25,7 +25,7 @@ import java.util.Set;
  * <p>
  * The library keeps no global state: every call of {@link #bootstrap(VulpesContent...)} returns its own registries.
  *
- * @since 1.0.0
+ * @since 0.5.0
  */
 public final class Vulpes {
 
