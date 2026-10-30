@@ -3,10 +3,12 @@ package net.onelitefeather.vulpes.item;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
+import net.minestom.server.MinecraftServer;
 import net.minestom.server.codec.Result;
 import net.minestom.server.codec.Transcoder;
 import net.minestom.server.component.DataComponent;
 import net.minestom.server.item.ItemStack;
+import net.minestom.server.registry.RegistryTranscoder;
 import org.jetbrains.annotations.ApiStatus;
 
 /**
@@ -22,6 +24,7 @@ final class ItemComponentDecoder {
 
     /**
      * Decodes every key and JSON pair with the Minestom codec of the component and sets the result on the builder.
+     * The server must be initialized with {@code MinecraftServer.init()} so registry-backed components can be decoded.
      *
      * @param builder    the builder to apply the components to
      * @param keyAndJson alternating component keys and JSON values
@@ -51,7 +54,8 @@ final class ItemComponentDecoder {
     }
 
     private static <T> void applyComponent(ItemStack.Builder builder, DataComponent<T> component, String key, JsonElement json) {
-        Result<T> result = component.decode(Transcoder.JSON, json);
+        Transcoder<JsonElement> transcoder = new RegistryTranscoder<>(Transcoder.JSON, MinecraftServer.getRegistries());
+        Result<T> result = component.decode(transcoder, json);
         if (result instanceof Result.Ok<T> ok) {
             builder.set(component, ok.value());
             return;
