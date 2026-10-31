@@ -26,6 +26,7 @@ final class FormulaFunction extends AbstractFunction {
     private final Formula formula;
     private final ThreadLocal<Integer> callDepth;
     private final List<FunctionParameterDefinition> parameterDefinitions;
+    private volatile Expression template;
 
     /**
      * Creates the function for a formula.
@@ -39,6 +40,15 @@ final class FormulaFunction extends AbstractFunction {
         this.parameterDefinitions = formula.parameters().stream()
                 .map(parameter -> FunctionParameterDefinition.builder().name(parameter).build())
                 .toList();
+    }
+
+    /**
+     * Sets the parsed form of the formula body that every call copies.
+     *
+     * @param template the parsed body, bound before the engine is handed out
+     */
+    void bind(Expression template) {
+        this.template = template;
     }
 
     @Override
@@ -63,7 +73,7 @@ final class FormulaFunction extends AbstractFunction {
         }
         callDepth.set(depth + 1);
         try {
-            Expression body = new Expression(formula.source(), expression.getConfiguration());
+            Expression body = new Expression(template);
             for (int index = 0; index < parameterValues.length; index++) {
                 body.with(formula.parameters().get(index), parameterValues[index]);
             }

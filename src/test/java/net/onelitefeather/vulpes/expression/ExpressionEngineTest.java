@@ -6,6 +6,12 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -370,6 +376,85 @@ class ExpressionEngineTest {
                 new Formula("never", List.of(), "1 > 2")), noNatives());
 
         assertFalse(engine.bool("never"), "1 > 2 must be false");
+    }
+
+    @Test
+    void testRepeatedEvaluationGivesSameResultAsFreshEngine() {
+        Formula tripled = new Formula("tripled", List.of("x"), "x * 3");
+        ExpressionEngine engine = ExpressionEngine.of(List.of(tripled), List.of(), noNatives());
+        BigDecimal fresh = number(ExpressionEngine.of(List.of(tripled), List.of(), noNatives()), "tripled", 10);
+
+        BigDecimal first = number(engine, "tripled", 10);
+        BigDecimal second = number(engine, "tripled", 10);
+
+        assertEquals(0, new BigDecimal("30").compareTo(second), "tripled(10) must be 30 but was " + second);
+        assertEquals(fresh, first, "the first evaluation must equal a fresh engine's result");
+        assertEquals(fresh, second, "a repeated evaluation must equal a fresh engine's result, trailing zeros included");
+    }
+
+    @Test
+    void testRepeatedDivisionKeepsDefaultRounding() {
+        Formula third = new Formula("third", List.of("x"), "x / 3");
+        ExpressionEngine engine = ExpressionEngine.of(List.of(third), List.of(), noNatives());
+        BigDecimal fresh = number(ExpressionEngine.of(List.of(third), List.of(), noNatives()), "third", 10);
+
+        number(engine, "third", 10);
+        BigDecimal repeated = number(engine, "third", 10);
+
+        assertEquals(fresh, repeated, "a repeated division must equal a fresh engine's result");
+        assertTrue(repeated.precision() > 20, "division must keep the default precision, result was " + repeated);
+    }
+
+    @Test
+    void testArgumentsOfOneCallDoNotLeakIntoNextCall() {
+        ExpressionEngine engine = ExpressionEngine.of(List.of(armorDamage()), List.of(), noNatives());
+
+        assertEquals(0, new BigDecimal("75").compareTo(number(engine, "armorDamage", 100, 25)),
+                "armorDamage(100, 25) must be 75");
+        assertEquals(0, new BigDecimal("50").compareTo(number(engine, "armorDamage", 100, 50)),
+                "armorDamage(100, 50) must be 50 and not reuse the previous armor");
+        assertEquals(0, new BigDecimal("200").compareTo(number(engine, "armorDamage", 200, 0)),
+                "armorDamage(200, 0) must be 200 and not reuse the previous base");
+    }
+
+    @Test
+    void testNestedFormulaCallGivesRightResultRepeatedly() {
+        ExpressionEngine engine = ExpressionEngine.of(List.of(
+                new Formula("twice", List.of("x"), "x * 2"),
+                new Formula("quad", List.of("x"), "twice(twice(x))")), List.of(), noNatives());
+
+        assertEquals(0, new BigDecimal("12").compareTo(number(engine, "quad", 3)), "quad(3) must be 12");
+        assertEquals(0, new BigDecimal("20").compareTo(number(engine, "quad", 5)), "quad(5) must be 20");
+        assertEquals(0, new BigDecimal("12").compareTo(number(engine, "quad", 3)), "quad(3) must still be 12 on a repeat");
+    }
+
+    @Test
+    void testConcurrentEvaluationsEachGetTheirOwnArguments() throws Exception {
+        Formula sum = new Formula("sum", List.of("a", "b"), "a + b");
+        ExpressionEngine engine = ExpressionEngine.of(List.of(sum), List.of(), noNatives());
+        ExecutorService pool = Executors.newFixedThreadPool(8);
+        try {
+            CountDownLatch start = new CountDownLatch(1);
+            List<Future<Void>> futures = new ArrayList<>();
+            for (int task = 0; task < 8; task++) {
+                int first = task;
+                futures.add(pool.submit((Callable<Void>) () -> {
+                    start.await();
+                    for (int call = 0; call < 2000; call++) {
+                        BigDecimal result = engine.number("sum", first, call);
+                        assertEquals(0, BigDecimal.valueOf((long) first + call).compareTo(result),
+                                "sum(" + first + ", " + call + ") must be " + (first + call) + " but was " + result);
+                    }
+                    return null;
+                }));
+            }
+            start.countDown();
+            for (Future<Void> future : futures) {
+                future.get(10, TimeUnit.SECONDS);
+            }
+        } finally {
+            pool.shutdownNow();
+        }
     }
 
     /**

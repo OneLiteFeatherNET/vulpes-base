@@ -9,6 +9,7 @@ import com.ezylang.evalex.parser.ParseException;
 import com.ezylang.evalex.parser.Token;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -25,23 +26,17 @@ import java.util.TreeSet;
  * from formulas. All sources are parsed and checked when the engine is created, so an invalid content definition fails
  * at startup.
  *
- * <p>An engine keeps no global state and can be used from several threads at once. Each evaluation parses its source
- * anew.
+ * <p>An engine keeps no global state and can be used from several threads at once. Sources are parsed once, when the
+ * engine is created, and each evaluation reuses the parsed form.
  *
  * @since 0.6.0
  */
 public final class ExpressionEngine {
 
-    private final ExpressionConfiguration configuration;
-    private final Map<String, Formula> callables;
+    private final Map<String, ParsedFormula> callables;
     private final ThreadLocal<Integer> callDepth;
 
-    private ExpressionEngine(
-            ExpressionConfiguration configuration,
-            Map<String, Formula> callables,
-            ThreadLocal<Integer> callDepth
-    ) {
-        this.configuration = configuration;
+    private ExpressionEngine(Map<String, ParsedFormula> callables, ThreadLocal<Integer> callDepth) {
         this.callables = callables;
         this.callDepth = callDepth;
     }
@@ -69,15 +64,12 @@ public final class ExpressionEngine {
 
         Set<String> names = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
         Map<String, Integer> arities = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-        Map<String, Formula> callables = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
         for (Formula function : formulaFunctions) {
             claim(names, function.name(), "Formula");
             arities.put(function.name(), function.parameters().size());
-            callables.put(function.name(), function);
         }
         for (Formula expression : formulaExpressions) {
             claim(names, expression.name(), "Formula");
-            callables.put(expression.name(), expression);
         }
         for (Map.Entry<String, NativeSignature> nativeEntry : nativeFunctions.entrySet()) {
             if (!Formula.isIdentifier(nativeEntry.getKey())) {
@@ -90,22 +82,28 @@ public final class ExpressionEngine {
 
         ThreadLocal<Integer> callDepth = ThreadLocal.withInitial(() -> 0);
         ExpressionConfiguration configuration = ExpressionConfiguration.defaultConfiguration();
+        List<FormulaFunction> functionBodies = new ArrayList<>();
         for (Formula function : formulaFunctions) {
-            configuration = configuration.withAdditionalFunctions(
-                    Map.entry(function.name(), new FormulaFunction(function, callDepth)));
+            FormulaFunction functionBody = new FormulaFunction(function, callDepth);
+            functionBodies.add(functionBody);
+            configuration = configuration.withAdditionalFunctions(Map.entry(function.name(), functionBody));
         }
         for (Map.Entry<String, NativeSignature> nativeEntry : nativeFunctions.entrySet()) {
             configuration = configuration.withAdditionalFunctions(
                     Map.entry(nativeEntry.getKey(), new NativeExpressionFunction(nativeEntry.getKey(), nativeEntry.getValue())));
         }
 
-        for (Formula function : formulaFunctions) {
-            validate(function, configuration, arities);
+        Map<String, ParsedFormula> callables = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+        for (int index = 0; index < formulaFunctions.size(); index++) {
+            Formula function = formulaFunctions.get(index);
+            Expression template = validate(function, configuration, arities);
+            functionBodies.get(index).bind(template);
+            callables.put(function.name(), new ParsedFormula(function, template));
         }
         for (Formula expression : formulaExpressions) {
-            validate(expression, configuration, arities);
+            callables.put(expression.name(), new ParsedFormula(expression, validate(expression, configuration, arities)));
         }
-        return new ExpressionEngine(configuration, Collections.unmodifiableMap(callables), callDepth);
+        return new ExpressionEngine(Collections.unmodifiableMap(callables), callDepth);
     }
 
     /**
@@ -157,21 +155,22 @@ public final class ExpressionEngine {
     }
 
     private EvaluationValue evaluate(String name, Object... arguments) {
-        Formula formula = callables.get(name);
-        if (formula == null) {
+        ParsedFormula parsed = callables.get(name);
+        if (parsed == null) {
             throw new IllegalArgumentException("No formula or expression named '%s'".formatted(name));
         }
+        Formula formula = parsed.formula();
         if (arguments.length != formula.parameters().size()) {
             throw new IllegalArgumentException("Formula '%s' expects %d argument(s), but got %d"
                     .formatted(name, formula.parameters().size(), arguments.length));
         }
 
-        Expression expression = new Expression(formula.source(), configuration);
-        for (int index = 0; index < arguments.length; index++) {
-            expression.with(formula.parameters().get(index),
-                    ExpressionValues.toEvaluationValue(name, arguments[index]));
-        }
         try {
+            Expression expression = new Expression(parsed.template());
+            for (int index = 0; index < arguments.length; index++) {
+                expression.with(formula.parameters().get(index),
+                        ExpressionValues.toEvaluationValue(name, arguments[index]));
+            }
             return expression.evaluate();
         } catch (EvaluationException | ParseException failure) {
             throw new IllegalStateException(
@@ -192,7 +191,10 @@ public final class ExpressionEngine {
         }
     }
 
-    private static void validate(Formula formula, ExpressionConfiguration configuration, Map<String, Integer> arities) {
+    /**
+     * Parses and checks a source. The returned expression is the parsed template that evaluations copy.
+     */
+    private static Expression validate(Formula formula, ExpressionConfiguration configuration, Map<String, Integer> arities) {
         Expression expression = new Expression(formula.source(), configuration);
         try {
             expression.validate();
@@ -215,9 +217,16 @@ public final class ExpressionEngine {
                             "Formula '%s' uses undeclared variable '%s'".formatted(formula.name(), variable));
                 }
             }
+            return expression;
         } catch (ParseException failure) {
             throw new IllegalArgumentException(
                     "Formula '%s' is invalid: %s".formatted(formula.name(), failure.getMessage()), failure);
         }
+    }
+
+    /**
+     * A formula or expression with its source parsed once. Evaluations copy the template instead of parsing again.
+     */
+    private record ParsedFormula(Formula formula, Expression template) {
     }
 }
