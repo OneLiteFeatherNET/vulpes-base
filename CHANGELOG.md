@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.1](https://github.com/OneLiteFeatherNET/vulpes-base/compare/v0.6.0...v0.6.1) (2026-10-31)
+
+
+### Performance Improvements
+
+* **expression:** reuse parsed formulas ([#115](https://github.com/OneLiteFeatherNET/vulpes-base/issues/115)) ([652355f](https://github.com/OneLiteFeatherNET/vulpes-base/commit/652355f248f5e80556762f28e32c951c76e285cb))
+
 ## [0.6.0](https://github.com/OneLiteFeatherNET/vulpes-base/compare/v0.5.0...v0.6.0) (2026-10-30)
 
 
