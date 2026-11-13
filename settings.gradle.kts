@@ -26,7 +26,7 @@ dependencyResolutionManagement {
             version("shadow", "9.6.1")
             version("bom", "1.8.9")
             version("worldSeed", "13.0.4")
-            version("cyclonedx", "3.5.1")
+            version("cyclonedx", "3.6.1")
             version("slf4j", "2.0.20")
             version("evalex", "3.8.0")
 
